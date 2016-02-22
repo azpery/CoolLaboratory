@@ -265,21 +265,18 @@
 
                     <div class="task-content">
 
-                      <ul class="task-list" >
-                        <li ng-repeat="ticket in tickets">
-                          <div class="task-checkbox">
-                            <input type="checkbox" class="flat-grey" checked="{{ticket.etat}}"/>
-                          </div>
-                          <div class="task-title">
-                            <span class="task-title-sp">{{ticket.libelle}}</span>
-                            <div class="pull-right hidden-phone">
-                              <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
+                      <ul class="task-list"  ng-show="tickets.length > 0">
+                        <li class="list-group-item clearfix task"  ng-repeat="ticket in tickets" >
+                            <p class="lead">{{ticket.libelle}} : {{ticket.description}}</p>
+                            <div>
+                              <span class="pull-right">
+                                <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+                                <button class="btn btn-primary btn-xs" ng-show="!ticket.etat" ng-click="setNotOk($index)"><span class="glyphicon glyphicon-ok"></span></button>
+                                <button class="btn btn-primary btn-xs" ng-show="ticket.etat" ng-click="setOk($index)"><span class="glyphicon glyphicon-repeat"></span></button>
+                                <button class="btn btn-danger btn-xs" ng-click="remove($index)"><span class="glyphicon glyphicon-remove" ></span></button>
+                              </span>
                             </div>
-                            <script>triggerTodo()</script>
-                          </div>
-                        </li>
+                          </li>
                       </ul>
                     </div>
 
@@ -302,15 +299,15 @@
           <div class="project_tasks_right_column_section sidebar_task_lists">
             <h3>Liste de Tickets</h3>
             <ul class="ng-pristine ng-untouched ng-valid ui-sortable">
-              <li class="task_list_reorder ui-sortable-handle"><span class="icon size_14 icon_reorder_grey"></span><span>Tickets en cours (5)</span></li>
+              <li class="task_list_reorder ui-sortable-handle"><span class="icon size_14 icon_reorder_grey"></span><span>Tickets en cours{{tickets.length}}</span></li>
             </ul>
           </div>
           <div class="project_tasks_right_column_section sidebar_progress">
             <h3>Progression du projet</h3>
-            <p>1 sur 6 Tickets.
-              <br> 5 Ticket en cours.</p>
+            <p>1 sur {{tickets.length}} Tickets.
+              <br> {{tickets.length}} Ticket en cours.</p>
             <div class="progressbar">
-              <div class="progressbar_value" style="width: 16%">
+              <div class="progressbar_value" style="width: {{1/tickets.length*100}}%">
               </div>
             </div>
             <a ng-href="projects/1/tasks/archive" class="less_important" href="projects/1/tasks/archive">Voir les Tickets finis</a>

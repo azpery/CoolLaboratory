@@ -287,4 +287,18 @@ factory('GetTicket', ['$resource', 'TokenHandler', function($resource, tokenHand
     resource = tokenHandler.wrapActions(resource, ['GET','query']);
     return resource;
 }]).
+factory('ChangeTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/updates/:idticket/tickets', {idticket:'@id'}, {
+      post: {method:'POST'}
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('DeleteTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/deletes/:idticket/tickets', {idticket:'@id'}, {
+      post: {method:'POST'}
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
   value('version', '0.1');

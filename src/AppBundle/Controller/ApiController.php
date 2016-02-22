@@ -106,7 +106,26 @@ class ApiController extends Controller
       $em->persist($ticket);
       $em->flush();
 
-      return new Response($serializer->serialize($projet, 'json'));
+      return new Response($serializer->serialize($ticket, 'json'));
+    }
+    public function postUpdateTicketAction($id, Request $request){
+      $em = $this->getDoctrine()->getManager();
+      $ticket = $em->getRepository('AppBundle:Ticket')->findOneById(intval($request->get('id')));
+      $serializer = $this->container->get('serializer');
+
+      $ticket->setEtat($request->get('etat'));
+      $em->persist($ticket);
+      $em->flush();
+      return new Response($serializer->serialize($ticket, 'json'));
+    }
+    public function postDeleteTicketAction($id, Request $request){
+      $em = $this->getDoctrine()->getManager();
+      $ticket = $em->getRepository('AppBundle:Ticket')->findOneById(intval($request->get('id')));
+      $serializer = $this->container->get('serializer');
+
+      $em->remove($ticket);
+      $em->flush();
+      return new Response($serializer->serialize("deleted", 'json'));
     }
     /**
      * @Route("/tickets/{iddev}/{idproj}", requirements={"iddev" = "\w+","idproj" = "\w+"})

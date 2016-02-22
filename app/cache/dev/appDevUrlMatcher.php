@@ -423,30 +423,49 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
             }
 
-            if (0 === strpos($pathinfo, '/api/tickets')) {
-                // api_post_ticket
-                if (preg_match('#^/api/tickets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
-                    if ($this->context->getMethod() != 'POST') {
-                        $allow[] = 'POST';
-                        goto not_api_post_ticket;
-                    }
-
-                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_ticket')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postTicketAction',  '_format' => 'json',));
+            // api_post_ticket
+            if (0 === strpos($pathinfo, '/api/tickets') && preg_match('#^/api/tickets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_ticket;
                 }
-                not_api_post_ticket:
 
-                // api_get_tickets
-                if (preg_match('#^/api/tickets/(?P<iddev>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_api_get_tickets;
-                    }
-
-                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_tickets')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getTicketsAction',  '_format' => 'json',));
-                }
-                not_api_get_tickets:
-
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_ticket')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postTicketAction',  '_format' => 'json',));
             }
+            not_api_post_ticket:
+
+            // api_post_update_ticket
+            if (0 === strpos($pathinfo, '/api/updates') && preg_match('#^/api/updates/(?P<id>[^/]++)/tickets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_update_ticket;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_update_ticket')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postUpdateTicketAction',  '_format' => 'json',));
+            }
+            not_api_post_update_ticket:
+
+            // api_post_delete_ticket
+            if (0 === strpos($pathinfo, '/api/deletes') && preg_match('#^/api/deletes/(?P<id>[^/]++)/tickets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_delete_ticket;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_delete_ticket')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postDeleteTicketAction',  '_format' => 'json',));
+            }
+            not_api_post_delete_ticket:
+
+            // api_get_tickets
+            if (0 === strpos($pathinfo, '/api/tickets') && preg_match('#^/api/tickets/(?P<iddev>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_api_get_tickets;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_tickets')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getTicketsAction',  '_format' => 'json',));
+            }
+            not_api_get_tickets:
 
         }
 

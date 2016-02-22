@@ -1,5 +1,6 @@
 function triggerTodo(){
-$('input').on('ifChecked', function(event) {
+
+$('input').on('Checked', function(event) {
   // var element = $(this).parent().find('input:checkbox:first');
   // element.parent().parent().parent().addClass('highlight');
   $(this).parents('li').addClass("task-done");
@@ -21,6 +22,16 @@ $('input[type="checkbox"].flat-grey, input[type="radio"].flat-grey').iCheck({
   checkboxClass: 'icheckbox_flat-grey',
   radioClass: 'iradio_flat-grey'
 });
+$(".todo-list").todolist({
+    onCheck: function(ele) {
+        console.log("The element has been checked")
+    },
+    onUncheck: function(ele) {
+        //console.log("The element has been unchecked")
+    }
+});
+
 }
 
 triggerTodo();
+setInterval(triggerTodo(), 1000);

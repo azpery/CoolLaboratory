@@ -213,7 +213,7 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       });
     }
   }])
-.controller('projetControlleur', ['$rootScope', '$scope', '$window', '$cookies','$routeParams','AddTicket','GetTicket',  function($rootScope, $scope, $window, $cookies,$routeParams, AddTicket, GetTicket) {
+.controller('projetControlleur', ['$rootScope', '$scope', '$window', '$cookies','$routeParams','AddTicket','GetTicket','ChangeTicket','DeleteTicket',  function($rootScope, $scope, $window, $cookies,$routeParams, AddTicket, GetTicket,ChangeTicket,DeleteTicket) {
     //
     if (typeof $cookies.get('username') != "undefined" && typeof $cookies.get('secret') != "undefined") {
       $rootScope.userAuth = {
@@ -236,13 +236,16 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
     $scope.addTicket = function () {
       AddTicket.post($scope.ticket, function(data) {
         var id = data.id;
+        $scope.tickets.push(data)
         $scope.error = "";
         $scope.success = data.username
       }, function(err) {
         console.log(err);
         $scope.error = err.status;
       });
+
     }
+
     GetTicket.query($scope.ticket, function(data) {
       console.log(data);
       var id = data.id;
@@ -254,4 +257,38 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       console.log(err);
       $scope.error = err.status;
     });
+    $scope.setOk = function(index){
+      $scope.tickets[index].etat = 0
+      $.extend($scope.tickets[index],{username: $rootScope.userAuth.secret});
+      console.log($scope.tickets[index]);
+      ChangeTicket.post($scope.tickets[index], function(data) {
+        console.log(data);
+        $scope.tickets[index] = data
+
+      }, function(err) {
+        console.log(err);
+        $scope.error = err.status;
+      });
+    }
+    $scope.setNotOk = function(index){
+      $scope.tickets[index].etat = 1
+      $.extend($scope.tickets[index],{username: $rootScope.userAuth.username,secret: $rootScope.userAuth.secret});
+      ChangeTicket.post($scope.tickets[index], function(data) {
+        console.log(data);
+        $scope.tickets[index] = data
+      }, function(err) {
+        console.log(err);
+        $scope.error = err.status;
+      });
+    }
+    $scope.remove = function(index){
+      $.extend($scope.tickets[index],{username: $rootScope.userAuth.username,secret: $rootScope.userAuth.secret});
+      DeleteTicket.post($scope.tickets[index], function(data) {
+        $scope.tickets.splice(index, 1);
+
+      }, function(err) {
+        console.log(err);
+        $scope.error = err.status;
+      });
+    }
   }]);
