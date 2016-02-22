@@ -1,4 +1,0 @@
-[2016-02-19 13:15:51] request.INFO: Matched route "app_default_index". {"route_parameters":{"_controller":"AppBundle\\Controller\\DefaultController::indexAction","_route":"app_default_index"},"request_uri":"http://localhost/angular-symfony/web/"} []
-[2016-02-19 13:15:51] security.INFO: Populated the TokenStorage with an anonymous Token. [] []
-[2016-02-19 13:15:51] security.INFO: No expression found; abstaining from voting. [] []
-[2016-02-19 13:15:51] request.CRITICAL: Uncaught PHP Exception InvalidArgumentException: "The template should be a string or implement TemplateReferenceInterface" at /var/www/html/angular-symfony/vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/View/View.php line 236 {"exception":"[object] (InvalidArgumentException(code: 0): The template should be a string or implement TemplateReferenceInterface at /var/www/html/angular-symfony/vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/View/View.php:236)"} []

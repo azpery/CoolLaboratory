@@ -29,19 +29,19 @@ class Projet
     /**
      * @var string
      *
-     * @ORM\Column(name="categorie", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="categorie", type="text", length=65535, nullable=true)
      */
     private $categorie;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="deadline", type="date", nullable=false)
+     * @ORM\Column(name="deadline", type="date", nullable=true)
      */
     private $deadline;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
      * @ORM\Column(name="dateCrea", type="date", nullable=false)
      */
@@ -79,6 +79,7 @@ class Projet
     public function __construct()
     {
         $this->iddev = new \Doctrine\Common\Collections\ArrayCollection();
+        // $this->deadline = date('Y-m-d');
     }
 
 
@@ -157,7 +158,7 @@ class Projet
     /**
      * Set deadline
      *
-     * @param \DateTime $deadline
+     * @param \Date $deadline
      *
      * @return Projet
      */
@@ -171,7 +172,7 @@ class Projet
     /**
      * Get deadline
      *
-     * @return \DateTime
+     * @return \Date
      */
     public function getDeadline()
     {
@@ -181,7 +182,7 @@ class Projet
     /**
      * Set datecrea
      *
-     * @param \DateTime $datecrea
+     * @param \Date $datecrea
      *
      * @return Projet
      */
@@ -195,7 +196,7 @@ class Projet
     /**
      * Get datecrea
      *
-     * @return \DateTime
+     * @return \Date
      */
     public function getDatecrea()
     {
@@ -219,7 +220,7 @@ class Projet
      *
      * @return Projet
      */
-    public function setIdchef(\AppBundle\Entity\Developpeur $idchef = null)
+    public function setIdchef(\AppBundle\Entity\Developpeur $idchef)
     {
         $this->idchef = $idchef;
 

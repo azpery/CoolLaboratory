@@ -15,14 +15,13 @@
   </div>
 </div>
 <div class="row" style="margin-bottom:5px;">
-  <div class="project card">
+  <div class="project card" ng-repeat="projet in projets[0].idproj">
     <div>
-      <a class="card_main" href="#/projects/1">
+      <a class="card_main" href="#/projects/{{ projet.id }}">
         <div class="card_header">
-          <h2>OremiaMobile</h2>
+          <h2>{{ projet.nom }}</h2>
           <p>par
-            <!-- ngIf: !model.can_view_company --><span>robin delaporte</span>
-            <!-- end ngIf: !model.can_view_company -->
+          <span>{{ projet.idchef.nom }} {{ projet.idchef.prenom }}</span>
           </p>
         </div>
 
@@ -30,7 +29,7 @@
 
         <div class="card_footer">
           <div class="card_footer_inner">
-            <span class="item_label" style="background-color: rgb(64, 150, 219);"><span  class="contrast_light">OREMIA MOBILE</span></span>
+            <span class="item_label" style="background-color: rgb(64, 150, 219);"><span  class="contrast_light">{{ projet.nom }}</span></span>
             <p>Actif <span>il y a un jour</span></p>
           </div>
         </div>

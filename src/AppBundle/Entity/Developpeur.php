@@ -200,7 +200,19 @@ class Developpeur
     {
         return $this->mdp;
     }
+    /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return Developpeur
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
 
+        return $this;
+    }
     /**
      * Get id
      *

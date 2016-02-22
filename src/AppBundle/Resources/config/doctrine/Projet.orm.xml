@@ -22,7 +22,7 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="deadline" type="date" column="deadline" nullable="false"/>
+    <field name="deadline" type="date" column="deadline" nullable="true"/>
     <field name="datecrea" type="date" column="dateCrea" nullable="false"/>
     <many-to-one field="idchef" target-entity="Developpeur" fetch="LAZY">
       <join-columns>

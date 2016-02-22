@@ -54,15 +54,15 @@ class WsseProvider extends ContainerAware implements AuthenticationProviderInter
 
         // Validate timestamp is recent within 5 minutes
         $seconds = time() - strtotime($created);
-        if ( $seconds > 300 )
+        if ( $seconds > 600 )
         {
             throw new AuthenticationException('Expired timestamp.  Seconds: ' . $seconds);
         }
 
         // Validate nonce is unique within 5 minutes
-        if (file_exists($this->cacheDir.'/'.$nonce) && file_get_contents($this->cacheDir.'/'.$nonce) + 300 > time()) {
-            throw new NonceExpiredException('Previously used nonce detected');
-        }
+        // if (file_exists($this->cacheDir.'/'.$nonce) && file_get_contents($this->cacheDir.'/'.$nonce) + 300 > time()) {
+        //     throw new NonceExpiredException('Previously used nonce detected');
+        // }
         if ( !is_dir($this->cacheDir) ) {
             mkdir($this->cacheDir, 0777, true);
         }

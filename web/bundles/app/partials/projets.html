@@ -1,3 +1,5 @@
+<script src="./bundles/app/js/todotask.js"></script>
+
 <div class="page_card page list_mode ng-scope" id="project_tasks" page-title="Tasks - OremiaMobile" main-section="projects" sub-section="tasks" page-object="project">
   <div class="page_inner">
     <div id="back_button" class="page_block" url="projects" title="Projects">
@@ -135,81 +137,24 @@
 
             <div class="unsorted_tasks">
               <div class="add_new_unsorted opened" id="add_new_unsorted">
-                <form class="slim_form slim_form_inline ng-pristine ang_form ng-invalid ng-invalid-required ng-valid-maxlength" name="add_unsorted" novalidate="true">
+                <form class="slim_form slim_form_inline ng-pristine ang_form ng-invalid ng-invalid-required ng-valid-maxlength" name="add_unsorted" ng-submit="addTicket()" novalidate="true">
                   <div class="task_form ng-valid with_subscribers" project="project">
                     <div class="slim_form_column_wrapper">
                       <div class="slim_form_left_column with_task_list">
                         <div class="form_block">
                           <div class="form_section name_description">
                             <div class="form_field name form_field_validation" form-field="name">
-                              <input type="text" name="name" ng-model="ng_model.name" focus-on="true" placeholder="Nom du Ticket" required="" ng-maxlength="150" maxlength="150" autocomplete="off" class="ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-touched">
+                              <input type="text" name="name" ng-model="ticket.nom" focus-on="true" placeholder="Nom du Ticket" required="" ng-maxlength="150" maxlength="150" autocomplete="off" class="ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-touched">
                               <div class="form_field_validation_message">Required</div>
                             </div>
                             <div class="form_field editor">
                               <div class="visual_editor_tinymce_wrapper ng-valid ng-pristine" placeholder="Décrivez le">
                                 <div class="visual_editor_tinymce_toggler">A</div>
-                                <div id="tinymce_rfgmj0q1h9jgiudi_toolbar" class="visual_editor_tinymce_toolbar visual_editor_tinymce_toolbar_hidden">
-                                  <div id="mceu_78" class="mce-tinymce mce-tinymce-inline mce-container mce-panel" hidefocus="1" tabindex="-1" role="application" style="border-width: 1px; left: 0px; top: 0px; width: 357px; height: 30px;">
-                                    <div id="mceu_78-body" class="mce-container-body mce-abs-layout" style="width: 357px; height: 30px;">
-                                      <div id="mceu_78-absend" class="mce-abs-end"></div>
-                                      <div id="mceu_79" class="mce-toolbar-grp mce-container mce-panel mce-abs-layout-item mce-first mce-last" hidefocus="1" tabindex="-1" role="group" style="left: 0px; top: 0px; width: 357px; height: 30px;">
-                                        <div id="mceu_79-body" class="mce-container-body mce-stack-layout" style="width: 357px; height: 30px;">
-                                          <div id="mceu_80" class="mce-container mce-toolbar mce-stack-layout-item mce-first mce-last" role="toolbar">
-                                            <div id="mceu_80-body" class="mce-container-body mce-flow-layout">
-                                              <div id="mceu_81" class="mce-container mce-flow-layout-item mce-first mce-btn-group" role="group">
-                                                <div id="mceu_81-body">
-                                                  <div id="mceu_68" class="mce-widget mce-btn mce-first" tabindex="-1" aria-labelledby="mceu_68" role="button" aria-label="Bold" title="Bold">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bold"></i></button>
-                                                  </div>
-                                                  <div id="mceu_69" class="mce-widget mce-btn" tabindex="-1" aria-labelledby="mceu_69" role="button" aria-label="Italic" title="Italic">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-italic"></i></button>
-                                                  </div>
-                                                  <div id="mceu_70" class="mce-widget mce-btn" tabindex="-1" aria-labelledby="mceu_70" role="button" aria-label="Underline" title="Underline">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-underline"></i></button>
-                                                  </div>
-                                                  <div id="mceu_71" class="mce-widget mce-btn mce-last" tabindex="-1" aria-labelledby="mceu_71" role="button" aria-label="Strikethrough" title="Strikethrough">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-strikethrough"></i></button>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              <div id="mceu_82" class="mce-container mce-flow-layout-item mce-btn-group" role="group">
-                                                <div id="mceu_82-body">
-                                                  <div id="mceu_72" class="mce-widget mce-btn mce-first" tabindex="-1" aria-labelledby="mceu_72" role="button" aria-label="Bullet list" title="Bullet list">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bullist"></i></button>
-                                                  </div>
-                                                  <div id="mceu_73" class="mce-widget mce-btn mce-last" tabindex="-1" aria-labelledby="mceu_73" role="button" aria-label="Numbered list" title="Numbered list">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-numlist"></i></button>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              <div id="mceu_83" class="mce-container mce-flow-layout-item mce-btn-group" role="group">
-                                                <div id="mceu_83-body">
-                                                  <div id="mceu_74" class="mce-widget mce-btn mce-first" tabindex="-1" aria-labelledby="mceu_74" role="button" aria-label="Insert image" title="Insert image">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-image"></i></button>
-                                                  </div>
-                                                  <div id="mceu_75" class="mce-widget mce-btn mce-last" tabindex="-1" aria-labelledby="mceu_75" role="button" aria-label="Insert/edit link" title="Insert/edit link">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-link"></i></button>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              <div id="mceu_84" class="mce-container mce-flow-layout-item mce-last mce-btn-group" role="group">
-                                                <div id="mceu_84-body">
-                                                  <div id="mceu_76" class="mce-widget mce-btn mce-first" tabindex="-1" aria-labelledby="mceu_76" role="button" aria-label="Insert code" title="Insert code">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-code"></i></button>
-                                                  </div>
-                                                  <div id="mceu_77" class="mce-widget mce-btn mce-last" tabindex="-1" aria-labelledby="mceu_77" role="button" aria-label="Quote" title="Quote">
-                                                    <button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-quote"></i></button>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                                <div class="form-group">
+                                  <label for="comment">Description:</label>
+                                  <textarea class="form-control" rows="5" ng-model="ticket.description" id="comment"></textarea>
                                 </div>
-                                <div id="tinymce_rfgmj0q1h9jgiudi" class="a51 visual_editor_tinymce mce-content-body mce-edit-focus" contenteditable="true" dir="ltr" style="position: relative;"></div>
+
                                 <input type="hidden" name="tinymce_rfgmj0q1h9jgiudi" value="">
                               </div>
                             </div>
@@ -320,100 +265,21 @@
 
                     <div class="task-content">
 
-                      <ul class="task-list">
-                        <li class="task-done">
+                      <ul class="task-list" >
+                        <li ng-repeat="ticket in tickets">
                           <div class="task-checkbox">
-                            <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                            <input type="checkbox" class="flat-grey" checked/>
-                            <!-- <input type="checkbox" class="square-grey"/> -->
+                            <input type="checkbox" class="flat-grey" checked="{{ticket.etat}}"/>
                           </div>
                           <div class="task-title">
-                            <span class="task-title-sp">Faire des bisous à Simon</span>
-                            <span class="label label-success">2 jours</span>
+                            <span class="task-title-sp">{{ticket.libelle}}</span>
                             <div class="pull-right hidden-phone">
                               <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
                               <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
                               <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
                             </div>
+                            <script>triggerTodo()</script>
                           </div>
                         </li>
-                        <li class="">
-                          <div class="task-checkbox">
-                            <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                            <input type="checkbox" class="flat-grey" />
-                          </div>
-                          <div class="task-title">
-                            <span class="task-title-sp">Finir le projet d'IHM</span>
-                            <span class="label label-danger">Fini</span>
-                            <div class="pull-right hidden-phone">
-                              <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="task-checkbox">
-                            <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                            <input type="checkbox" class="flat-grey" />
-                          </div>
-                          <div class="task-title">
-                            <span class="task-title-sp">Se documenter sur Symfony 2</span>
-                            <span class="label label-warning">Cours</span>
-                            <div class="pull-right hidden-phone">
-                              <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="task-checkbox">
-                            <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                            <input type="checkbox" class="flat-grey" />
-                          </div>
-                          <div class="task-title">
-                            <span class="task-title-sp">Faire un beau rapport</span>
-                            <span class="label label-primary">3 jours</span>
-                            <div class="pull-right hidden-phone">
-                              <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="task-checkbox">
-                            <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                            <input type="checkbox" class="flat-grey" />
-                          </div>
-                          <div class="task-title">
-                            <span class="task-title-sp">Réviser la cinématique des fichiers</span>
-                            <span class="label label-inverse">Mtn</span>
-                            <div class="pull-right">
-                              <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="task-checkbox">
-                            <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                            <input type="checkbox" class="flat-grey" />
-                          </div>
-                          <div class="task-title">
-                            <span class="task-title-sp">Avoir 20/20 dans toute les matières</span>
-                            <span class="label label-success">2 Jours</span>
-                            <div class="pull-right hidden-phone">
-                              <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                            </div>
-                          </div>
-                        </li>
-
-
                       </ul>
                     </div>
 
@@ -455,4 +321,3 @@
   </div>
 </div>
 </div>
-<script src="js/todotask.js"></script>

@@ -4,7 +4,7 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('CoolLab.services', ['ngResource']).
+angular.module('CoolLab.services', ['ngResource','ngCookies']).
   factory('Base64', function() {
     var keyStr = 'ABCDEFGHIJKLMNOP' +
         'QRSTUVWXYZabcdef' +
@@ -159,7 +159,6 @@ factory('TokenHandler', [ '$http', 'Base64', function($http, Base64) {
         resource[action] = function ( data, success, error ) {
             if ( (typeof data.username != 'undefined') && (typeof data.secret != 'undefined') ) {
                 $http.defaults.headers.common['X-WSSE'] = tokenHandler.getCredentials(data.username, data.secret);
-                delete data.username;
                 delete data.secret;
             }
             return resource['_'+action](
@@ -189,7 +188,7 @@ factory('TokenHandler', [ '$http', 'Base64', function($http, Base64) {
 }]).
 factory('Salt', ['$resource', function($resource) {
     // Service to load Salt
-    return $resource('/app_dev.php/:username/salt', {username:'@id'});
+    return $resource('./app_dev.php/:username/salt', {username:'@username'});
 }]).
 factory('Digest', ['$q', function($q) {
     var factory = {
@@ -221,22 +220,71 @@ factory('Digest', ['$q', function($q) {
     return factory;
 }]).
 factory('Hello', ['$resource', 'TokenHandler', function($resource, tokenHandler) {
-    var resource = $resource('/app_dev.php/api/hello');
+    var resource = $resource('./app_dev.php/api/hello');
+    resource = tokenHandler.wrapActions(resource, ['get']);
+    return resource;
+}]).
+factory('User', ['$resource', 'TokenHandler', function($resource, tokenHandler) {
+    var resource = $resource('./app_dev.php/api/users/:username',{username:'@username'}, {
+        query: {method:'GET', params:{username:'@username'}, isArray:true}
+    });
     resource = tokenHandler.wrapActions(resource, ['get']);
     return resource;
 }]).
 factory('Todos', ['$resource', 'TokenHandler', function($resource, tokenHandler){
-    var resource = $resource('/app_dev.php/api/todos', {}, {
+    var resource = $resource('./app_dev.php/api/todos', {}, {
         query: {method:'GET', params:{}, isArray:true}
     });
     resource = tokenHandler.wrapActions(resource, ['get', 'query']);
     return resource;
 }]).
 factory('Todo', ['$resource', 'TokenHandler', function($resource, tokenHandler){
-    var resource = $resource('/app_dev.php/api/todo', {}, {
+    var resource = $resource('./app_dev.php/api/todo', {}, {
         update: {method:'PUT'},
     });
     resource = tokenHandler.wrapActions(resource, ['get', 'update']);
+    return resource;
+}]).
+factory('Projets', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/projets/:username', {username:'@username'}, {
+        query: {method:'GET', params:{}, isArray:true}
+    });
+    resource = tokenHandler.wrapActions(resource, ['get', 'query']);
+    return resource;
+}]).
+factory('Projet', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/projet/:username', {username:'@username'}, {
+        update: {method:'PUT'},
+    });
+    resource = tokenHandler.wrapActions(resource, ['get', 'update']);
+    return resource;
+}]).
+factory('AjouterProjet', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/projets', {}, {
+        post: {method:'POST'}
+    });
+    resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('Signup', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/signup', {},{
+         post: { method: 'POST' }
+     });
+    resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('AddTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/tickets', {},{
+         post: { method: 'POST' }
+     });
+    resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('GetTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/tickets/:iddev/:idproj', {},{
+         get: { method: 'GET' , params:{}, isArray:true}
+     });
+    resource = tokenHandler.wrapActions(resource, ['GET','query']);
     return resource;
 }]).
   value('version', '0.1');

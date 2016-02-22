@@ -31,7 +31,7 @@ class Ticket
      *
      * @ORM\Column(name="etat", type="integer", nullable=false)
      */
-    private $etat = '0';
+    private $etat = 1;
 
     /**
      * @var \DateTime
