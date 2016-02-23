@@ -13,7 +13,7 @@
           <ul class="page_header_actions button_group">
             <li>
               <span class="small people_dropdown can_manage dropdown_button dropdown_button position_bottom">
-                <a href="#/project/1/team"> </a><button id="_button" type="button"><a href="#/project/1/team"><span class="name">Cool-laborateurs (1)</span></a>
+                <a href="#/project/{{idproj}}/team"> </a><button id="_button" type="button"><a href="#/project/{{idproj}}/team"><span class="name">Cool-laborateurs (1)</span></a>
               </button>
               <div class="menu menu_right">
                 <span class="button_arrow"></span>
@@ -45,7 +45,7 @@
                     <dl class="project_info_list">
                       <dt>Created by</dt>
                       <dd>
-                        <a href="users/1" class="user">
+                        <a href="users/{{idproj}}" class="user">
                           <span class="user_name">robin-delaporte</span>
                         </a>
                       </dd>
@@ -112,16 +112,16 @@
           <div id="project_top_bar">
             <ul class="page_tabs_tabs">
               <li class="selected">
-                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/1" href="#/projects/1">Tickets</a>
+                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/{{idproj}}" href="#/projects/1">Tickets</a>
               </li>
               <li>
-                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/1/discussion" href="#/projects/1/discussion">Discussions</a>
+                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/{{idproj}}/discussion" href="#/projects/1/discussion">Discussions</a>
               </li>
               <li>
-                <a class="page_sidebar_menu_item page_tab_icon_files" ng-href="#/projects/1/fichier" href="#/projects/1/fichier">Fichiers</a>
+                <a class="page_sidebar_menu_item page_tab_icon_files" ng-href="#/projects/{{idproj}}/fichier" href="#/projects/1/fichier">Fichiers</a>
               </li>
               <li class="">
-                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/1/activite" href="#/projects/1/activite">Activité</a>
+                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/{{idproj}}/activite" href="#/projects/1/activite">Activité</a>
               </li>
             </ul>
           </div>

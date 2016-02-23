@@ -246,10 +246,10 @@ factory('Todo', ['$resource', 'TokenHandler', function($resource, tokenHandler){
     return resource;
 }]).
 factory('Projets', ['$resource', 'TokenHandler', function($resource, tokenHandler){
-    var resource = $resource('./app_dev.php/api/projets/:username', {username:'@username'}, {
+    var resource = $resource('./app_dev.php/api/projets/:id', {id:'@id'}, {
         query: {method:'GET', params:{}, isArray:true}
     });
-    resource = tokenHandler.wrapActions(resource, ['get', 'query']);
+    resource = tokenHandler.wrapActions(resource, ['GET', 'query']);
     return resource;
 }]).
 factory('Projet', ['$resource', 'TokenHandler', function($resource, tokenHandler){
@@ -297,6 +297,34 @@ factory('ChangeTicket', ['$resource', 'TokenHandler', function($resource, tokenH
 factory('DeleteTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
   var resource = $resource('./app_dev.php/api/deletes/:idticket/tickets', {idticket:'@id'}, {
       post: {method:'POST'}
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('Team', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/teams/:idproj', {idproj:'@id'}, {
+      get: { method: 'GET' , params:{}, isArray:true}
+  });
+  resource = tokenHandler.wrapActions(resource, ['GET','get']);
+    return resource;
+}]).
+factory('Users', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/all/user', {}, {
+      get: { method: 'GET' , params:{}, isArray:true}
+  });
+  resource = tokenHandler.wrapActions(resource, ['GET','get']);
+    return resource;
+}]).
+factory('AddUser', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/updates/teammates', {}, {
+      post: { method: 'POST' }
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('RemoveUser', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/deletes/teammates', {}, {
+      post: { method: 'POST' }
   });
   resource = tokenHandler.wrapActions(resource, ['POST','post']);
     return resource;

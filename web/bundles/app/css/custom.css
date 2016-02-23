@@ -22348,3 +22348,20 @@ tasks-timeline.can_add_tasks .tasks_timeline_content .tasks_timeline_content_inn
 #visual_language .visual_language_section .visual_language_instructions p:last-child {
   margin-bottom: 0px;
 }
+.search {
+  position: absolute;
+  top: 42px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid;
+}
+li.ng-binding.ng-scope {
+  width: 100%;
+  cursor: pointer;
+}
+ul.phones {
+  list-style: none;
+  width: 100%;
+  max-height: 150px;
+  overflow: overlay;
+}

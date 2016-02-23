@@ -31,7 +31,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     .when("/projects/:id/fichier", {templateUrl: "./bundles/app/partials/Fichier.html", controller: "MyCtrl1"})
     .when("/projects/:id/activite", {templateUrl: "./bundles/app/partials/Activite.html", controller: "MyCtrl1"})
     .when("/project/:id/discussion/1", {templateUrl: "./bundles/app/partials/discussionModal.html", controller: "MyCtrl1"})
-    .when("/project/:id/team", {templateUrl: "./bundles/app/partials/team.html", controller: "MyCtrl1"})
+    .when("/project/:id/team", {templateUrl: "./bundles/app/partials/team.html", controller: "teamController"})
     .when("/projects/:id/discussions/add", {templateUrl: "./bundles/app/partials/ouvrirDiscussion.html", controller: "MyCtrl1"})
     .when("/calendrier", {templateUrl: "./bundles/app/partials/calendrier.html", controller: "MyCtrl1"})
     .when('/login', {templateUrl: './bundles/app/partials/login.html', controller: 'Login'})

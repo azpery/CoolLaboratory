@@ -110,16 +110,16 @@
           <div id="project_top_bar">
             <ul class="page_tabs_tabs">
               <li class="selected">
-                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/1" href="#/projects/1">Tickets</a>
+                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/{{idproj}}" href="#/projects/1">Tickets</a>
               </li>
               <li>
-                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/1/discussion" href="#/projects/1/discussion">Discussions</a>
+                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/{{idproj}}/discussion" href="#/projects/1/discussion">Discussions</a>
               </li>
               <li>
-                <a class="page_sidebar_menu_item page_tab_icon_files" ng-href="#/projects/1/fichier" href="#/projects/1/fichier">Fichiers</a>
+                <a class="page_sidebar_menu_item page_tab_icon_files" ng-href="#/projects/{{idproj}}/fichier" href="#/projects/1/fichier">Fichiers</a>
               </li>
               <li class="">
-                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/1/activite" href="#/projects/1/activite">Activité</a>
+                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/{{idproj}}/activite" href="#/projects/1/activite">Activité</a>
               </li>
             </ul>
           </div>
@@ -133,31 +133,23 @@
             Cool Laborateurs
           </header>
 
-          <ul class="list-group teammates">
-            <li class="list-group-item">
-              <a href=""><img src="img/26115.jpg" width="50" height="50"></a>
-              <span class="pull-right label label-danger inline m-t-15">Admin</span>
-              <a href="">Damon Parker</a>
+          <ul class="list-group teammates" >
+            <li class="list-group-item" ng-repeat="coolab in coolabs">
+              <a href=""><img src="./bundles/app/img/26115.jpg" width="50" height="50"></a>
+              <a href="">{{coolab.nom}} {{coolab.prenom}}</a>
+<span class="pull-right">
+              <button class="btn btn-danger btn-xs" ng-click="remove($index)"><span class="glyphicon glyphicon-remove" ></span></button>
+</span>
             </li>
+
             <li class="list-group-item">
-              <a href=""><img src="img/26115.jpg" width="50" height="50"></a>
-              <span class="pull-right label label-info inline m-t-15">Chef de projet </span>
-              <a href="">Joe Waston</a>
-            </li>
-            <li class="list-group-item">
-              <a href=""><img src="img/26115.jpg" width="50" height="50"></a>
-              <span class="pull-right label label-warning inline m-t-15">Développeur</span>
-              <a href="">Jannie Dvis</a>
-            </li>
-            <li class="list-group-item">
-              <a href=""><img src="img/26115.jpg" width="50" height="50"></a>
-              <span class="pull-right label label-warning inline m-t-15">Développeur</span>
-              <a href="">Emma Welson</a>
-            </li>
-            <li class="list-group-item">
-              <a href=""><img src="img/26115.jpg" width="50" height="50"></a>
-              <span class="pull-right label label-success inline m-t-15">Client</span>
-              <a href="">Emma Welson</a>
+              <input ng-model="query.nom" class="form-control">
+              <ul class="phones">
+                <li ng-repeat="user in users | filter:query:strict" ng-click="addCoolab($index)">
+                  {{user.nom}} {{user.prenom}}
+                </li>
+              </ul>
+
             </li>
           </ul>
           <div class="panel-footer bg-white">

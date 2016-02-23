@@ -141,11 +141,13 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
     // Load Todos with secured connection
     $scope.projets = Projets.query({
       username: $rootScope.userAuth.username,
-      secret: $rootScope.userAuth.secret
+      secret: $rootScope.userAuth.secret,
+      id: $cookies.get('id')
     });
     $scope.projet = {
       username: $rootScope.userAuth.username,
-      secret: $rootScope.userAuth.secret
+      secret: $rootScope.userAuth.secret,
+      id: $cookies.get('id')
     };
     $scope.createProjet = function() {
 
@@ -187,7 +189,8 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       };
       $rootScope.logged = true;
     }
-    // button logout clicked, remove the stored cookies
+    $scope.username = $rootScope.userAuth.username
+      // button logout clicked, remove the stored cookies
     $scope.logout = function() {
       $cookies.remove("username");
       $cookies.remove("id");
@@ -202,18 +205,19 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
     $scope.user = {};
     $scope.validForm = function() {
       Signup.post(
-        $scope.user
-      , function(data) {
-        var id = data.id;
-        $scope.error = "";
-        $scope.success = data.username
-      }, function(err) {
-        console.log(err);
-        $scope.error = err.status;
-      });
+        $scope.user,
+        function(data) {
+          var id = data.id;
+          $scope.error = "";
+          $scope.success = data.username
+        },
+        function(err) {
+          console.log(err);
+          $scope.error = err.status;
+        });
     }
   }])
-.controller('projetControlleur', ['$rootScope', '$scope', '$window', '$cookies','$routeParams','AddTicket','GetTicket','ChangeTicket','DeleteTicket',  function($rootScope, $scope, $window, $cookies,$routeParams, AddTicket, GetTicket,ChangeTicket,DeleteTicket) {
+  .controller('projetControlleur', ['$rootScope', '$scope', '$window', '$cookies', '$routeParams', 'AddTicket', 'GetTicket', 'ChangeTicket', 'DeleteTicket', function($rootScope, $scope, $window, $cookies, $routeParams, AddTicket, GetTicket, ChangeTicket, DeleteTicket) {
     //
     if (typeof $cookies.get('username') != "undefined" && typeof $cookies.get('secret') != "undefined") {
       $rootScope.userAuth = {
@@ -227,13 +231,15 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       return;
     }
     var date = new Date();
-
-    $scope.ticket = {username: $rootScope.userAuth.username,
-    secret: $rootScope.userAuth.secret,
-    idproj: $routeParams.id,
-    datecrea: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
-    iddev:$cookies.get('id')}
-    $scope.addTicket = function () {
+    $scope.idproj = $routeParams.id;
+    $scope.ticket = {
+      username: $rootScope.userAuth.username,
+      secret: $rootScope.userAuth.secret,
+      idproj: $routeParams.id,
+      datecrea: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
+      iddev: $cookies.get('id')
+    }
+    $scope.addTicket = function() {
       AddTicket.post($scope.ticket, function(data) {
         var id = data.id;
         $scope.tickets.push(data)
@@ -257,9 +263,11 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       console.log(err);
       $scope.error = err.status;
     });
-    $scope.setOk = function(index){
+    $scope.setOk = function(index) {
       $scope.tickets[index].etat = 0
-      $.extend($scope.tickets[index],{username: $rootScope.userAuth.secret});
+      $.extend($scope.tickets[index], {
+        username: $rootScope.userAuth.secret
+      });
       console.log($scope.tickets[index]);
       ChangeTicket.post($scope.tickets[index], function(data) {
         console.log(data);
@@ -270,9 +278,12 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
         $scope.error = err.status;
       });
     }
-    $scope.setNotOk = function(index){
+    $scope.setNotOk = function(index) {
       $scope.tickets[index].etat = 1
-      $.extend($scope.tickets[index],{username: $rootScope.userAuth.username,secret: $rootScope.userAuth.secret});
+      $.extend($scope.tickets[index], {
+        username: $rootScope.userAuth.username,
+        secret: $rootScope.userAuth.secret
+      });
       ChangeTicket.post($scope.tickets[index], function(data) {
         console.log(data);
         $scope.tickets[index] = data
@@ -281,8 +292,11 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
         $scope.error = err.status;
       });
     }
-    $scope.remove = function(index){
-      $.extend($scope.tickets[index],{username: $rootScope.userAuth.username,secret: $rootScope.userAuth.secret});
+    $scope.remove = function(index) {
+      $.extend($scope.tickets[index], {
+        username: $rootScope.userAuth.username,
+        secret: $rootScope.userAuth.secret
+      });
       DeleteTicket.post($scope.tickets[index], function(data) {
         $scope.tickets.splice(index, 1);
 
@@ -291,4 +305,65 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
         $scope.error = err.status;
       });
     }
+  }])
+  .controller('teamController', ['$rootScope', '$scope', '$window', '$cookies', 'Team', '$routeParams', 'Users','AddUser','RemoveUser', function($rootScope, $scope, $window, $cookies, Team, $routeParams, Users,AddUser,RemoveUser) {
+    //
+    var params = {
+      username: $rootScope.userAuth.username,
+      secret: $rootScope.userAuth.secret,
+      idproj: $routeParams.id
+    }
+    $scope.idproj = $routeParams.id
+    Team.get(
+      params,
+      function(data) {
+        $scope.coolabs = data;
+      },
+      function(err) {
+        console.log(err);
+        $scope.error = err.status;
+      });
+    Users.get(
+      params,
+      function(data) {
+        $scope.users = data;
+      },
+      function(err) {
+        console.log(err);
+        $scope.error = err.status;
+      });
+    $scope.addCoolab = function(index) {
+      params = {
+        username: $rootScope.userAuth.username,
+        secret: $rootScope.userAuth.secret,
+        idproj: $routeParams.id,
+        iddev: $scope.users[index].id
+      }
+      AddUser.post(
+        params,
+        function(data) {
+          $scope.coolabs.push(data);
+        },
+        function(err) {
+          console.log(err);
+          $scope.error = err.status;
+        });
+    }
+    $scope.remove = function(index){
+      params = {
+        username: $rootScope.userAuth.username,
+        secret: $rootScope.userAuth.secret,
+        idproj: $routeParams.id,
+        iddev: $scope.users[index].id
+      }
+      RemoveUser.post(
+        params,
+        function(data) {
+          $scope.coolabs.splice(index, 1);
+        },
+        function(err) {
+          console.log(err);
+          $scope.error = err.status;
+        });
+      }
   }]);

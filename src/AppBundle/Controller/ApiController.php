@@ -61,13 +61,37 @@ class ApiController extends Controller
      }
     }
 
-    public function getProjetsAction($username){
+    public function getProjetsAction($id){
               $repository = $this
           ->getDoctrine()
           ->getManager()
           ->getRepository('AppBundle:Developpeur')
         ;
-        $listAdverts = $repository->findByNom($username);
+        $listAdverts = $repository->findById($id);
+        $serializer = $this->container->get('serializer');
+        $reports = $serializer->serialize($listAdverts, 'json');
+        return new Response($reports); // should be $reports as $doctrineobject is not serialized
+    //  return new JsonResponse($listAdverts);
+    }
+    public function getTeamAction($idproj){
+              $repository = $this
+          ->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Projet')
+        ;
+        $listAdverts = $repository->findOneById($idproj);
+        $serializer = $this->container->get('serializer');
+        $reports = $serializer->serialize($listAdverts->getIddev(), 'json');
+        return new Response($reports); // should be $reports as $doctrineobject is not serialized
+    //  return new JsonResponse($listAdverts);
+    }
+    public function getAllUserAction(){
+              $repository = $this
+          ->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Developpeur')
+        ;
+        $listAdverts = $repository->findAll();
         $serializer = $this->container->get('serializer');
         $reports = $serializer->serialize($listAdverts, 'json');
         return new Response($reports); // should be $reports as $doctrineobject is not serialized
@@ -88,23 +112,30 @@ class ApiController extends Controller
       $projet->setDatecrea(new \DateTime($request->get('datecrea')));
       $em->persist($projet);
       $em->flush();
+      $em->persist($chef);
+      $em->flush();
 
       return new Response($serializer->serialize($projet, 'json'));
     }
     public function postTicketAction(Request $request){
       $em = $this->getDoctrine()->getManager();
       $projet = $em->getRepository('AppBundle:Projet')->findOneById(intval($request->get('idproj')));
-      $dev = $em->getRepository('AppBundle:Developpeur')->findOneById(intval($request->get('iddev')));
+      $dev = $em->getRepository('AppBundle:Developpeur')->findById(intval($request->get('iddev')));
       $serializer = $this->container->get('serializer');
       $ticket = new Ticket();
       $ticket->setLibelle($request->get('nom'));
       $ticket->setDescription($request->get('description'));
       $ticket->setDatecrea(new \DateTime($request->get('datecrea')));
       $ticket->setIdproj($projet);
-      $ticket->addIddev($dev);
-      $dev->addIdtick($ticket);
-      $em->persist($ticket);
-      $em->flush();
+      foreach ($projet->getIddev() as $dev){
+        $ticket->addIddev($dev);
+        $dev->addIdtick($ticket);
+        $em->persist($ticket);
+        $em->flush();
+        $em->persist($dev);
+        $em->flush();
+      }
+
 
       return new Response($serializer->serialize($ticket, 'json'));
     }
@@ -126,6 +157,32 @@ class ApiController extends Controller
       $em->remove($ticket);
       $em->flush();
       return new Response($serializer->serialize("deleted", 'json'));
+    }
+    public function postUpdateTeammateAction(Request $request){
+      $em = $this->getDoctrine()->getManager();
+      $projet = $em->getRepository('AppBundle:Projet')->findOneById(intval($request->get('idproj')));
+      $user = $em->getRepository('AppBundle:Developpeur')->findOneById(intval($request->get('iddev')));
+      $projet->addIddev($user);
+      $user->addIdproj($projet);
+      $em->persist($projet);
+      $em->flush();
+      $em->persist($user);
+      $em->flush();
+      $serializer = $this->container->get('serializer');
+      return new Response($serializer->serialize($user, 'json'));
+    }
+    public function postDeleteTeammateAction(Request $request){
+      $em = $this->getDoctrine()->getManager();
+      $projet = $em->getRepository('AppBundle:Projet')->findOneById(intval($request->get('idproj')));
+      $user = $em->getRepository('AppBundle:Developpeur')->findOneById(intval($request->get('iddev')));
+      $projet->removeIddev($user);
+      $user->removeIdproj($projet);
+      $em->persist($projet);
+      $em->flush();
+      $em->persist($user);
+      $em->flush();
+      $serializer = $this->container->get('serializer');
+      return new Response($serializer->serialize("Deleted", 'json'));
     }
     /**
      * @Route("/tickets/{iddev}/{idproj}", requirements={"iddev" = "\w+","idproj" = "\w+"})
@@ -149,7 +206,7 @@ class ApiController extends Controller
         ->getRepository('AppBundle:Ticket')
         ;
         $projet = $repository->createQueryBuilder('t')
-            ->select('t')
+            ->select('t.id, t.libelle,t.description, t.etat')
             ->innerJoin('t.iddev', 'd')
             ->where('d.id = :dev_id')
             ->andWhere('t.idproj = :proj_id')

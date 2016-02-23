@@ -21,7 +21,7 @@
         <div class="card_header">
           <h2>{{ projet.nom }}</h2>
           <p>par
-          <span>{{ projet.idchef.nom }} {{ projet.idchef.prenom }}</span>
+          <span>{{ projet.idchef.nom || "Moi" }} {{ projet.idchef.prenom }}</span>
           </p>
         </div>
 

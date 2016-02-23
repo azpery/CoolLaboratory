@@ -301,7 +301,7 @@ class Projet extends \AppBundle\Entity\Projet implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function setIdchef(\AppBundle\Entity\Developpeur $idchef = NULL)
+    public function setIdchef(\AppBundle\Entity\Developpeur $idchef)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdchef', [$idchef]);

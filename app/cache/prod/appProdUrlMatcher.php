@@ -33,9 +33,17 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
                 return array (  '_controller' => 'AppBundle\\Controller\\ApiController::helloAction',  '_route' => 'app_api_hello',);
             }
 
-            // app_api_todos
-            if ($pathinfo === '/api/todos') {
-                return array (  '_controller' => 'AppBundle\\Controller\\ApiController::todosAction',  '_route' => 'app_api_todos',);
+            if (0 === strpos($pathinfo, '/api/t')) {
+                // app_api_gettickets
+                if (0 === strpos($pathinfo, '/api/tickets') && preg_match('#^/api/tickets/(?P<iddev>\\w+)/(?P<idproj>\\w+)$#s', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'app_api_gettickets')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getTicketsAction',));
+                }
+
+                // app_api_todos
+                if ($pathinfo === '/api/todos') {
+                    return array (  '_controller' => 'AppBundle\\Controller\\ApiController::todosAction',  '_route' => 'app_api_todos',);
+                }
+
             }
 
         }
@@ -52,6 +60,11 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
         // app_default_salt
         if (preg_match('#^/(?P<username>\\w+)/salt$#s', $pathinfo, $matches)) {
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'app_default_salt')), array (  '_controller' => 'AppBundle\\Controller\\DefaultController::saltAction',));
+        }
+
+        // app_default_signup
+        if ($pathinfo === '/signup') {
+            return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::signup',  '_route' => 'app_default_signup',);
         }
 
         // app_default_info
@@ -290,16 +303,115 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             }
             not_api_get_me:
 
-            // api_get_projet
-            if (0 === strpos($pathinfo, '/api/projets') && preg_match('#^/api/projets/(?P<nomProjet>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+            // api_get_projets
+            if (0 === strpos($pathinfo, '/api/projets') && preg_match('#^/api/projets/(?P<id>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                     $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_api_get_projet;
+                    goto not_api_get_projets;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_projet')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getProjetAction',  '_format' => 'json',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_projets')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getProjetsAction',  '_format' => 'json',));
             }
-            not_api_get_projet:
+            not_api_get_projets:
+
+            // api_get_team
+            if (0 === strpos($pathinfo, '/api/teams') && preg_match('#^/api/teams/(?P<idproj>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_api_get_team;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_team')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getTeamAction',  '_format' => 'json',));
+            }
+            not_api_get_team:
+
+            // api_get_all_user
+            if (0 === strpos($pathinfo, '/api/all/user') && preg_match('#^/api/all/user(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_api_get_all_user;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_all_user')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getAllUserAction',  '_format' => 'json',));
+            }
+            not_api_get_all_user:
+
+            // api_post_projet
+            if (0 === strpos($pathinfo, '/api/projets') && preg_match('#^/api/projets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_projet;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_projet')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postProjetAction',  '_format' => 'json',));
+            }
+            not_api_post_projet:
+
+            // api_post_ticket
+            if (0 === strpos($pathinfo, '/api/tickets') && preg_match('#^/api/tickets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_ticket;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_ticket')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postTicketAction',  '_format' => 'json',));
+            }
+            not_api_post_ticket:
+
+            // api_post_update_ticket
+            if (0 === strpos($pathinfo, '/api/updates') && preg_match('#^/api/updates/(?P<id>[^/]++)/tickets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_update_ticket;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_update_ticket')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postUpdateTicketAction',  '_format' => 'json',));
+            }
+            not_api_post_update_ticket:
+
+            // api_post_delete_ticket
+            if (0 === strpos($pathinfo, '/api/deletes') && preg_match('#^/api/deletes/(?P<id>[^/]++)/tickets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_delete_ticket;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_delete_ticket')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postDeleteTicketAction',  '_format' => 'json',));
+            }
+            not_api_post_delete_ticket:
+
+            // api_post_update_teammate
+            if (0 === strpos($pathinfo, '/api/updates/teammates') && preg_match('#^/api/updates/teammates(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_update_teammate;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_update_teammate')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postUpdateTeammateAction',  '_format' => 'json',));
+            }
+            not_api_post_update_teammate:
+
+            // api_post_delete_teammate
+            if (0 === strpos($pathinfo, '/api/deletes/teammates') && preg_match('#^/api/deletes/teammates(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_api_post_delete_teammate;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_delete_teammate')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postDeleteTeammateAction',  '_format' => 'json',));
+            }
+            not_api_post_delete_teammate:
+
+            // api_get_tickets
+            if (0 === strpos($pathinfo, '/api/tickets') && preg_match('#^/api/tickets/(?P<iddev>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_api_get_tickets;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_tickets')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getTicketsAction',  '_format' => 'json',));
+            }
+            not_api_get_tickets:
 
         }
 
