@@ -1,75 +1,54 @@
 <?php
 
 namespace AppBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * Ticket
- *
- * @ORM\Table(name="ticket", indexes={@ORM\Index(name="idProj", columns={"idProj"})})
- * @ORM\Entity
  */
 class Ticket
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="libelle", type="text", length=65535, nullable=false)
      */
     private $libelle;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     private $description;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="etat", type="integer", nullable=false)
      */
     private $etat = '0';
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="dateCrea", type="date", nullable=false)
      */
     private $datecrea;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="echeance", type="date", nullable=false)
      */
     private $echeance;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \AppBundle\Entity\Projet
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Projet")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idProj", referencedColumnName="id")
-     * })
+     *@MaxDepth(2)
+
      */
     private $idproj;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Developpeur", mappedBy="idtick")
+     *@MaxDepth(2)
+
      */
     private $iddev;
 
@@ -80,7 +59,6 @@ class Ticket
     {
         $this->iddev = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
 
     /**
      * Set libelle
@@ -219,7 +197,7 @@ class Ticket
      *
      * @return Ticket
      */
-    public function setIdproj(\AppBundle\Entity\Projet $idproj = null)
+    public function setIdproj(\AppBundle\Entity\Projet $idproj )
     {
         $this->idproj = $idproj;
 

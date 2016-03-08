@@ -2,63 +2,40 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Rss
- *
- * @ORM\Table(name="RSS", indexes={@ORM\Index(name="idProj", columns={"idProj"})})
- * @ORM\Entity
  */
 class Rss
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="title", type="text", length=65535, nullable=false)
      */
     private $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     private $description;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="pubDate", type="date", nullable=false)
      */
     private $pubdate;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="link", type="text", length=65535, nullable=false)
      */
     private $link;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \AppBundle\Entity\Projet
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Projet")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idProj", referencedColumnName="id")
-     * })
      */
     private $idproj;
-
 
 
     /**
@@ -174,7 +151,7 @@ class Rss
      *
      * @return Rss
      */
-    public function setIdproj(\AppBundle\Entity\Projet $idproj = null)
+    public function setIdproj(\AppBundle\Entity\Projet $idproj )
     {
         $this->idproj = $idproj;
 

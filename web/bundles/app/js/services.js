@@ -303,7 +303,7 @@ factory('DeleteTicket', ['$resource', 'TokenHandler', function($resource, tokenH
 }]).
 factory('Team', ['$resource', 'TokenHandler', function($resource, tokenHandler){
   var resource = $resource('./app_dev.php/api/teams/:idproj', {idproj:'@id'}, {
-      get: { method: 'GET' , params:{}, isArray:true}
+      get: { method: 'GET' , params:{}, isArray:false}
   });
   resource = tokenHandler.wrapActions(resource, ['GET','get']);
     return resource;
@@ -327,6 +327,29 @@ factory('RemoveUser', ['$resource', 'TokenHandler', function($resource, tokenHan
       post: { method: 'POST' }
   });
   resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('Discussion', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/discussions', {}, {
+      post: { method: 'POST' },
+      get: { method: 'GET' }
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post','GET','get']);
+    return resource;
+}]).
+factory('Discussions', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/discussions/:idproj', {idproj:"@idproj"}, {
+      get: { method: 'GET' , params:{}, isArray:true}
+  });
+  resource = tokenHandler.wrapActions(resource, ['GET','get']);
+    return resource;
+}]).
+factory('Messages', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/messages/:iddisc', {iddisc:"@iddisc"}, {
+      get: { method: 'GET' , params:{}, isArray:true},
+      post: { method: 'POST' }
+  });
+  resource = tokenHandler.wrapActions(resource, ['GET','get','POST', 'post']);
     return resource;
 }]).
   value('version', '0.1');

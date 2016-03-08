@@ -4,23 +4,22 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-
-    <field name="nom" type="text" column="nom" length="65535" nullable="false">
+    <field name="nom" type="text" column="nom" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="prenom" type="text" column="prenom" length="65535" nullable="false">
+    <field name="prenom" type="text" column="prenom" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="photo" type="text" column="photo" length="65535" nullable="false">
+    <field name="photo" type="text" column="photo" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="mdp" type="text" column="mdp" length="65535" nullable="false">
+    <field name="mdp" type="text" column="mdp" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
@@ -32,16 +31,6 @@
         </join-columns>
         <inverse-join-columns>
           <join-column name="idProj" referenced-column-name="id"/>
-        </inverse-join-columns>
-      </join-table>
-    </many-to-many>
-    <many-to-many field="iddisc" target-entity="Discussion" inversed-by="iddev" fetch="LAZY">
-      <join-table name="repond">
-        <join-columns>
-          <join-column name="idDev" referenced-column-name="id"/>
-        </join-columns>
-        <inverse-join-columns>
-          <join-column name="idDisc" referenced-column-name="id"/>
         </inverse-join-columns>
       </join-table>
     </many-to-many>

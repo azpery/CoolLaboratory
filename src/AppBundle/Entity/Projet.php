@@ -1,75 +1,52 @@
 <?php
 
 namespace AppBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * Projet
- *
- * @ORM\Table(name="projet", indexes={@ORM\Index(name="idChef", columns={"idChef"})})
- * @ORM\Entity
  */
 class Projet
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
      */
     private $nom;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     private $description;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="categorie", type="text", length=65535, nullable=true)
      */
     private $categorie;
 
     /**
-     * @var \Date
-     *
-     * @ORM\Column(name="deadline", type="date", nullable=true)
+     * @var \DateTime
      */
     private $deadline;
 
     /**
-     * @var \Date
-     *
-     * @ORM\Column(name="dateCrea", type="date", nullable=false)
+     * @var \DateTime
      */
     private $datecrea;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \AppBundle\Entity\Developpeur
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Developpeur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idChef", referencedColumnName="id")
-     * })
+     *@MaxDepth(2)
      */
     private $idchef;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Developpeur", mappedBy="idproj")
+     *@MaxDepth(2)
      */
     private $iddev;
 
@@ -79,9 +56,7 @@ class Projet
     public function __construct()
     {
         $this->iddev = new \Doctrine\Common\Collections\ArrayCollection();
-        // $this->deadline = date('Y-m-d');
     }
-
 
     /**
      * Set nom
@@ -158,7 +133,7 @@ class Projet
     /**
      * Set deadline
      *
-     * @param \Date $deadline
+     * @param \DateTime $deadline
      *
      * @return Projet
      */
@@ -172,7 +147,7 @@ class Projet
     /**
      * Get deadline
      *
-     * @return \Date
+     * @return \DateTime
      */
     public function getDeadline()
     {
@@ -182,7 +157,7 @@ class Projet
     /**
      * Set datecrea
      *
-     * @param \Date $datecrea
+     * @param \DateTime $datecrea
      *
      * @return Projet
      */
@@ -196,7 +171,7 @@ class Projet
     /**
      * Get datecrea
      *
-     * @return \Date
+     * @return \DateTime
      */
     public function getDatecrea()
     {
@@ -220,7 +195,7 @@ class Projet
      *
      * @return Projet
      */
-    public function setIdchef(\AppBundle\Entity\Developpeur $idchef)
+    public function setIdchef(\AppBundle\Entity\Developpeur $idchef )
     {
         $this->idchef = $idchef;
 

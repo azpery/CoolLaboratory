@@ -336,6 +336,28 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             }
             not_api_get_all_user:
 
+            // api_get_discussion
+            if (0 === strpos($pathinfo, '/api/discussions') && preg_match('#^/api/discussions/(?P<idproj>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_api_get_discussion;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_discussion')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getDiscussionAction',  '_format' => 'json',));
+            }
+            not_api_get_discussion:
+
+            // api_get_message
+            if (0 === strpos($pathinfo, '/api/messages') && preg_match('#^/api/messages/(?P<iddisc>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_api_get_message;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_message')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getMessageAction',  '_format' => 'json',));
+            }
+            not_api_get_message:
+
             // api_post_projet
             if (0 === strpos($pathinfo, '/api/projets') && preg_match('#^/api/projets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
                 if ($this->context->getMethod() != 'POST') {
@@ -391,16 +413,41 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             }
             not_api_post_update_teammate:
 
-            // api_post_delete_teammate
-            if (0 === strpos($pathinfo, '/api/deletes/teammates') && preg_match('#^/api/deletes/teammates(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+            if (0 === strpos($pathinfo, '/api/d')) {
+                // api_post_delete_teammate
+                if (0 === strpos($pathinfo, '/api/deletes/teammates') && preg_match('#^/api/deletes/teammates(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                    if ($this->context->getMethod() != 'POST') {
+                        $allow[] = 'POST';
+                        goto not_api_post_delete_teammate;
+                    }
+
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_delete_teammate')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postDeleteTeammateAction',  '_format' => 'json',));
+                }
+                not_api_post_delete_teammate:
+
+                // api_post_discussion
+                if (0 === strpos($pathinfo, '/api/discussions') && preg_match('#^/api/discussions(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                    if ($this->context->getMethod() != 'POST') {
+                        $allow[] = 'POST';
+                        goto not_api_post_discussion;
+                    }
+
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_discussion')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postDiscussionAction',  '_format' => 'json',));
+                }
+                not_api_post_discussion:
+
+            }
+
+            // api_post_message
+            if (0 === strpos($pathinfo, '/api/messages') && preg_match('#^/api/messages/(?P<iddisc>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
                 if ($this->context->getMethod() != 'POST') {
                     $allow[] = 'POST';
-                    goto not_api_post_delete_teammate;
+                    goto not_api_post_message;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_delete_teammate')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postDeleteTeammateAction',  '_format' => 'json',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_post_message')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::postMessageAction',  '_format' => 'json',));
             }
-            not_api_post_delete_teammate:
+            not_api_post_message:
 
             // api_get_tickets
             if (0 === strpos($pathinfo, '/api/tickets') && preg_match('#^/api/tickets/(?P<iddev>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {

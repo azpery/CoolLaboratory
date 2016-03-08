@@ -1,61 +1,38 @@
 <?php
 
 namespace AppBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * Discussion
- *
- * @ORM\Table(name="discussion")
- * @ORM\Entity
  */
 class Discussion
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     private $description;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="dateCreation", type="date", nullable=false)
      */
     private $datecreation;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(name="Etat", type="boolean", nullable=false)
      */
     private $etat = '0';
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Developpeur", mappedBy="iddisc")
+     * @var \AppBundle\Entity\Projet
+     *@MaxDepth(2)
      */
-    private $iddev;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->iddev = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    private $idproj;
 
 
     /**
@@ -141,38 +118,26 @@ class Discussion
     }
 
     /**
-     * Add iddev
+     * Set idproj
      *
-     * @param \AppBundle\Entity\Developpeur $iddev
+     * @param \AppBundle\Entity\Projet $idproj
      *
      * @return Discussion
      */
-    public function addIddev(\AppBundle\Entity\Developpeur $iddev)
+    public function setIdproj(\AppBundle\Entity\Projet $idproj)
     {
-        $this->iddev[] = $iddev;
+        $this->idproj = $idproj;
 
         return $this;
     }
 
     /**
-     * Remove iddev
+     * Get idproj
      *
-     * @param \AppBundle\Entity\Developpeur $iddev
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return \AppBundle\Entity\Projet
      */
-    public function removeIddev(\AppBundle\Entity\Developpeur $iddev)
+    public function getIdproj()
     {
-        return $this->iddev->removeElement($iddev);
-    }
-
-    /**
-     * Get iddev
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getIddev()
-    {
-        return $this->iddev;
+        return $this->idproj;
     }
 }

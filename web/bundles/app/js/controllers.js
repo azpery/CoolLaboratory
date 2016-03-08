@@ -217,7 +217,7 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
         });
     }
   }])
-  .controller('projetControlleur', ['$rootScope', '$scope', '$window', '$cookies', '$routeParams', 'AddTicket', 'GetTicket', 'ChangeTicket', 'DeleteTicket', function($rootScope, $scope, $window, $cookies, $routeParams, AddTicket, GetTicket, ChangeTicket, DeleteTicket) {
+  .controller('projetControlleur', ['$rootScope', '$scope', '$window', '$cookies', '$routeParams', 'AddTicket', 'GetTicket', 'ChangeTicket', 'DeleteTicket','Projet', function($rootScope, $scope, $window, $cookies, $routeParams, AddTicket, GetTicket, ChangeTicket, DeleteTicket, Projet) {
     //
     if (typeof $cookies.get('username') != "undefined" && typeof $cookies.get('secret') != "undefined") {
       $rootScope.userAuth = {
@@ -230,6 +230,7 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       $window.location = '#/login';
       return;
     }
+
     var date = new Date();
     $scope.idproj = $routeParams.id;
     $scope.ticket = {
@@ -239,6 +240,13 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       datecrea: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
       iddev: $cookies.get('id')
     }
+    Projet.get($scope.ticket, function(data) {
+      $scope.projet = data;
+      console.log(data);
+    }, function(err) {
+      console.log(err);
+      $scope.error = err.status;
+    });
     $scope.addTicket = function() {
       AddTicket.post($scope.ticket, function(data) {
         var id = data.id;
@@ -306,7 +314,7 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       });
     }
   }])
-  .controller('teamController', ['$rootScope', '$scope', '$window', '$cookies', 'Team', '$routeParams', 'Users','AddUser','RemoveUser', function($rootScope, $scope, $window, $cookies, Team, $routeParams, Users,AddUser,RemoveUser) {
+  .controller('teamController', ['$rootScope', '$scope', '$window', '$cookies', 'Team', '$routeParams', 'Users', 'AddUser', 'RemoveUser', function($rootScope, $scope, $window, $cookies, Team, $routeParams, Users, AddUser, RemoveUser) {
     //
     var params = {
       username: $rootScope.userAuth.username,
@@ -342,14 +350,14 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       AddUser.post(
         params,
         function(data) {
-          $scope.coolabs.push(data);
+          $scope.coolabs[$scope.coolabs.count] = data
         },
         function(err) {
           console.log(err);
           $scope.error = err.status;
         });
     }
-    $scope.remove = function(index){
+    $scope.remove = function(index) {
       params = {
         username: $rootScope.userAuth.username,
         secret: $rootScope.userAuth.secret,
@@ -359,11 +367,129 @@ controller('Login', ['$rootScope', '$scope', '$window', '$cookies', 'User', 'Sal
       RemoveUser.post(
         params,
         function(data) {
-          $scope.coolabs.splice(index, 1);
+
+        delete  $scope.coolabs[index];
         },
         function(err) {
           console.log(err);
           $scope.error = err.status;
         });
-      }
+    }
+  }])
+  .controller('ajouterDiscussionController', ['$rootScope', '$scope', '$window', '$cookies', 'Discussion', '$routeParams', function($rootScope, $scope, $window, $cookies, Discussion, $routeParams) {
+    //
+    if (typeof $cookies.get('username') != "undefined" && typeof $cookies.get('secret') != "undefined") {
+      $rootScope.userAuth = {
+        username: $cookies.get('username'),
+        secret: $cookies.get('secret')
+      };
+    }
+    // If not authenticated, go to login
+    if (typeof $rootScope.userAuth == "undefined") {
+      $window.location = '#/login';
+      return;
+    }
+    $scope.id = $routeParams.id
+
+    var date = new Date();
+    $scope.discussion = {
+      username: $rootScope.userAuth.username,
+      secret: $rootScope.userAuth.secret,
+      datecrea: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
+      idproj: $routeParams.id
+    };
+    $scope.validForm = function() {
+      Discussion.post(
+        $scope.discussion,
+        function(data) {
+          var id = data.id;
+          $scope.error = "";
+          $scope.success = "ajouté"
+        },
+        function(err) {
+          console.log(err);
+          $scope.error = err.status;
+        });
+    }
+
+  }])
+  .controller('DiscussionsController', ['$rootScope', '$scope', '$window', '$cookies', 'Discussions', '$routeParams', function($rootScope, $scope, $window, $cookies, Discussions, $routeParams) {
+    //
+    if (typeof $cookies.get('username') != "undefined" && typeof $cookies.get('secret') != "undefined") {
+      $rootScope.userAuth = {
+        username: $cookies.get('username'),
+        secret: $cookies.get('secret')
+      };
+    }
+    // If not authenticated, go to login
+    if (typeof $rootScope.userAuth == "undefined") {
+      $window.location = '#/login';
+      return;
+    }
+    $scope.id = $routeParams.id
+
+    var date = new Date();
+    var params = {
+      username: $rootScope.userAuth.username,
+      secret: $rootScope.userAuth.secret,
+      datecrea: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
+      idproj: $routeParams.id
+    };
+
+    Discussions.get(params,
+      function(data) {
+        $scope.discussions = data;
+        $scope.error = "";
+      },
+      function(err) {
+        console.log(err);
+        $scope.error = err.status;
+      });
+  }])
+  .controller('MessagesDiscussionController', ['$rootScope', '$scope', '$window', '$cookies', 'Messages', '$routeParams', function($rootScope, $scope, $window, $cookies, Messages, $routeParams) {
+    //
+    if (typeof $cookies.get('username') != "undefined" && typeof $cookies.get('secret') != "undefined") {
+      $rootScope.userAuth = {
+        username: $cookies.get('username'),
+        secret: $cookies.get('secret')
+      };
+    }
+    // If not authenticated, go to login
+    if (typeof $rootScope.userAuth == "undefined") {
+      $window.location = '#/login';
+      return;
+    }
+    $scope.id = $routeParams.id
+
+    var date = new Date();
+    var params = {
+      username: $rootScope.userAuth.username,
+      secret: $rootScope.userAuth.secret,
+      datecrea: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
+      iddisc: $routeParams.iddisc,
+      iddev: $cookies.get('id')
+    };
+
+    Messages.get(params,
+      function(data) {
+        $scope.messages = data;
+        $scope.error = "";
+      },
+      function(err) {
+        console.log(err);
+        $scope.error = err.status;
+      });
+
+    $scope.message = params
+    $scope.ajouterMessage = function() {
+      Messages.post($scope.message,
+        function(data) {
+          $scope.messages.push(data);
+          $scope.error = "";
+        },
+        function(err) {
+          console.log(err);
+          $scope.error = err.status;
+        });
+    }
   }]);

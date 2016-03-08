@@ -64,10 +64,10 @@ class Developpeur extends \AppBundle\Entity\Developpeur implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'nom', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'prenom', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'photo', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'mdp', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'idproj', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'iddisc', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'idtick'];
+            return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'nom', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'prenom', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'photo', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'mdp', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'idproj', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'idtick'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'nom', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'prenom', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'photo', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'mdp', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'idproj', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'iddisc', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'idtick'];
+        return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'nom', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'prenom', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'photo', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'mdp', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'idproj', '' . "\0" . 'AppBundle\\Entity\\Developpeur' . "\0" . 'idtick'];
     }
 
     /**
@@ -318,39 +318,6 @@ class Developpeur extends \AppBundle\Entity\Developpeur implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdproj', []);
 
         return parent::getIdproj();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addIddisc(\AppBundle\Entity\Discussion $iddisc)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addIddisc', [$iddisc]);
-
-        return parent::addIddisc($iddisc);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function removeIddisc(\AppBundle\Entity\Discussion $iddisc)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeIddisc', [$iddisc]);
-
-        return parent::removeIddisc($iddisc);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getIddisc()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIddisc', []);
-
-        return parent::getIddisc();
     }
 
     /**

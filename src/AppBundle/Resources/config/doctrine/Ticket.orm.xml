@@ -7,24 +7,24 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="libelle" type="text" column="libelle" length="65535" nullable="false">
+    <field name="libelle" type="text" column="libelle" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="description" type="text" column="description" length="65535" nullable="false">
+    <field name="description" type="text" column="description" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="etat" type="integer" column="etat" nullable="false">
+    <field name="etat" type="integer" column="etat" nullable="true">
       <options>
         <option name="unsigned"/>
         <option name="default">0</option>
       </options>
     </field>
-    <field name="datecrea" type="date" column="dateCrea" nullable="false"/>
-    <field name="echeance" type="date" column="echeance" nullable="false"/>
+    <field name="datecrea" type="date" column="dateCrea" nullable="true"/>
+    <field name="echeance" type="date" column="echeance" nullable="true"/>
     <many-to-one field="idproj" target-entity="Projet" fetch="LAZY">
       <join-columns>
         <join-column name="idProj" referenced-column-name="id"/>

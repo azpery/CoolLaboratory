@@ -301,7 +301,7 @@ class Ticket extends \AppBundle\Entity\Ticket implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function setIdproj(\AppBundle\Entity\Projet $idproj = NULL)
+    public function setIdproj(\AppBundle\Entity\Projet $idproj)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdproj', [$idproj]);

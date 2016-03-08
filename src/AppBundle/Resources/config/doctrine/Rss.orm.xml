@@ -7,18 +7,18 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="title" type="text" column="title" length="65535" nullable="false">
+    <field name="title" type="text" column="title" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="description" type="text" column="description" length="65535" nullable="false">
+    <field name="description" type="text" column="description" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="pubdate" type="date" column="pubDate" nullable="false"/>
-    <field name="link" type="text" column="link" length="65535" nullable="false">
+    <field name="pubdate" type="date" column="pubDate" nullable="true"/>
+    <field name="link" type="text" column="link" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

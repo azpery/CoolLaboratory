@@ -11,7 +11,7 @@
           <ul class="page_header_actions button_group">
             <li>
               <span class="small people_dropdown can_manage dropdown_button dropdown_button position_bottom">
-                <a href="#/project/1/team"> <button id="_button" type="button"><span class="name">Cool-laborateurs (1)</span></a>
+                <a href="#/project/{{id}}/team"> <button id="_button" type="button"><span class="name">Cool-laborateurs (1)</span></a>
               </button>
               <div class="menu menu_right">
                 <span class="button_arrow"></span>
@@ -100,7 +100,7 @@
             </li>
           </ul>
 
-          <h1>OremiaMobile</h1>
+          <h1>{{nom}}</h1>
         </div>
       </div>
 
@@ -109,16 +109,16 @@
           <div id="project_top_bar">
             <ul class="page_tabs_tabs">
               <li>
-                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/1" href="#/projects/1">Tickets</a>
+                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/{{id}}" href="#/projects/1">Tickets</a>
               </li>
               <li class="selected">
-                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/1/discussion" href="#/projects/1/discussion">Discussions</a>
+                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/{{id}}/discussion" href="#/projects/1/discussion">Discussions</a>
               </li>
               <li>
-                <a class="page_sidebar_menu_item page_tab_icon_files" ng-href="#/projects/1/fichier" href="#/projects/1/fichier">Fichiers</a>
+                <a class="page_sidebar_menu_item page_tab_icon_files" ng-href="#/projects/{{id}}/fichier" href="#/projects/1/fichier">Fichiers</a>
               </li>
               <li class="">
-                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/1/activite" href="#/projects/1/activite">Activité</a>
+                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/{{id}}/activite" href="#/projects/1/activite">Activité</a>
               </li>
             </ul>
           </div>
@@ -128,7 +128,7 @@
     <div class="page_action_bar page_block">
       <div class="page_action_bar_inner page_block_inner">
         <div class="page_action_bar_left">
-          <a ng-href="#/projects/1/discussions/add" class="button small default" href="projects/1/discussions/add">+ Ouvrir une discution</a>
+          <a ng-href="#/projects/{{id}}/discussions/add" class="button small default" href="projects/1/discussions/add">+ Ouvrir une discution</a>
         </div>
       </div>
     </div>
@@ -143,10 +143,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr touch-href="projects/1/discussions/1">
+                <tr touch-href="projects/{{discussion.idproj.id}}/discussions/{{discussion.id}}" ng-repeat="discussion in discussions">
                   <td class="col_comment_count"><span class="comment_count icon icon_read_bubble">0</span></td>
                   <td class="col_main">
-                    <div class="discussion_link"><a href="#/project/1/discussion/1">Problème sur le rss</a>
+                    <div class="discussion_link"><a href="#/project/{{discussion.idproj.id}}/discussion/{{discussion.id}}">{{discussion.description}}</a>
                     </div>
                   </td>
                   <td class="col_ago">Il y a 13 jours</td>

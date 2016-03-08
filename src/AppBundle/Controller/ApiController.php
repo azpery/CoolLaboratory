@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,8 +10,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use JMS\Serializer\SerializationContext;
+
 use AppBundle\Entity\Projet;
 use AppBundle\Entity\Ticket;
+use AppBundle\Entity\Discussion;
+use AppBundle\Entity\Message;
+
+
 
 
 /**
@@ -38,7 +43,7 @@ class ApiController extends Controller
         throw $this->createNotFoundException();
       }
       $serializer = $this->container->get('serializer');
-      $reports = $serializer->serialize($user, 'json');
+      $reports = $serializer->serialize($user, 'json', SerializationContext::create()->enableMaxDepthChecks());
       return new Response($reports);
     }
 
@@ -69,7 +74,19 @@ class ApiController extends Controller
         ;
         $listAdverts = $repository->findById($id);
         $serializer = $this->container->get('serializer');
-        $reports = $serializer->serialize($listAdverts, 'json');
+        $reports = $serializer->serialize($listAdverts, 'json', SerializationContext::create()->enableMaxDepthChecks());
+        return new Response($reports); // should be $reports as $doctrineobject is not serialized
+    //  return new JsonResponse($listAdverts);
+    }
+    public function getOneProjetsAction($idProjet){
+              $repository = $this
+          ->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Projet')
+        ;
+        $listAdverts = $repository->findOneById($idProjet);
+        $serializer = $this->container->get('serializer');
+        $reports = $serializer->serialize($listAdverts, 'json', SerializationContext::create()->enableMaxDepthChecks());
         return new Response($reports); // should be $reports as $doctrineobject is not serialized
     //  return new JsonResponse($listAdverts);
     }
@@ -81,7 +98,7 @@ class ApiController extends Controller
         ;
         $listAdverts = $repository->findOneById($idproj);
         $serializer = $this->container->get('serializer');
-        $reports = $serializer->serialize($listAdverts->getIddev(), 'json');
+        $reports = $serializer->serialize($listAdverts->getIddev(), 'json', SerializationContext::create()->enableMaxDepthChecks());
         return new Response($reports); // should be $reports as $doctrineobject is not serialized
     //  return new JsonResponse($listAdverts);
     }
@@ -93,7 +110,31 @@ class ApiController extends Controller
         ;
         $listAdverts = $repository->findAll();
         $serializer = $this->container->get('serializer');
-        $reports = $serializer->serialize($listAdverts, 'json');
+        $reports = $serializer->serialize($listAdverts, 'json', SerializationContext::create()->enableMaxDepthChecks());
+        return new Response($reports); // should be $reports as $doctrineobject is not serialized
+    //  return new JsonResponse($listAdverts);
+    }
+    public function getDiscussionAction($idproj){
+              $repository = $this
+          ->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Discussion')
+        ;
+        $listAdverts = $repository->findByIdproj($idproj);
+        $serializer = $this->container->get('serializer');
+        $reports = $serializer->serialize($listAdverts, 'json', SerializationContext::create()->enableMaxDepthChecks());
+        return new Response($reports); // should be $reports as $doctrineobject is not serialized
+    //  return new JsonResponse($listAdverts);
+    }
+    public function getMessageAction($iddisc){
+              $repository = $this
+          ->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Message')
+        ;
+        $listAdverts = $repository->findByIddisc($iddisc);
+        $serializer = $this->container->get('serializer');
+        $reports = $serializer->serialize($listAdverts, 'json', SerializationContext::create()->enableMaxDepthChecks());
         return new Response($reports); // should be $reports as $doctrineobject is not serialized
     //  return new JsonResponse($listAdverts);
     }
@@ -115,7 +156,7 @@ class ApiController extends Controller
       $em->persist($chef);
       $em->flush();
 
-      return new Response($serializer->serialize($projet, 'json'));
+      return new Response($serializer->serialize($projet, 'json', SerializationContext::create()->enableMaxDepthChecks()));
     }
     public function postTicketAction(Request $request){
       $em = $this->getDoctrine()->getManager();
@@ -137,7 +178,7 @@ class ApiController extends Controller
       }
 
 
-      return new Response($serializer->serialize($ticket, 'json'));
+      return new Response($serializer->serialize($ticket, 'json', SerializationContext::create()->enableMaxDepthChecks()));
     }
     public function postUpdateTicketAction($id, Request $request){
       $em = $this->getDoctrine()->getManager();
@@ -147,7 +188,7 @@ class ApiController extends Controller
       $ticket->setEtat($request->get('etat'));
       $em->persist($ticket);
       $em->flush();
-      return new Response($serializer->serialize($ticket, 'json'));
+      return new Response($serializer->serialize($ticket, 'json', SerializationContext::create()->enableMaxDepthChecks()));
     }
     public function postDeleteTicketAction($id, Request $request){
       $em = $this->getDoctrine()->getManager();
@@ -156,7 +197,7 @@ class ApiController extends Controller
 
       $em->remove($ticket);
       $em->flush();
-      return new Response($serializer->serialize("deleted", 'json'));
+      return new Response($serializer->serialize("deleted", 'json', SerializationContext::create()->enableMaxDepthChecks()));
     }
     public function postUpdateTeammateAction(Request $request){
       $em = $this->getDoctrine()->getManager();
@@ -169,7 +210,7 @@ class ApiController extends Controller
       $em->persist($user);
       $em->flush();
       $serializer = $this->container->get('serializer');
-      return new Response($serializer->serialize($user, 'json'));
+      return new Response($serializer->serialize($user, 'json', SerializationContext::create()->enableMaxDepthChecks()));
     }
     public function postDeleteTeammateAction(Request $request){
       $em = $this->getDoctrine()->getManager();
@@ -182,7 +223,38 @@ class ApiController extends Controller
       $em->persist($user);
       $em->flush();
       $serializer = $this->container->get('serializer');
-      return new Response($serializer->serialize("Deleted", 'json'));
+      return new Response($serializer->serialize("Deleted", 'json', SerializationContext::create()->enableMaxDepthChecks()));
+    }
+    public function postDiscussionAction(Request $request){
+      $em = $this->getDoctrine()->getManager();
+      $repository =$em->getRepository('AppBundle:Projet');
+      $projet = $repository->findOneById($request->get('idproj'));
+      $discussion = new Discussion();
+      $discussion->setDescription($request->get("description"));
+      $discussion->setDatecreation(new \DateTime($request->get('datecrea')));
+      $discussion->setEtat(0);
+      $discussion->setIdproj($projet);
+      $serializer = $this->container->get('serializer');
+      $em->persist($discussion);
+      $em->flush();
+      return new Response($serializer->serialize($discussion, 'json', SerializationContext::create()->enableMaxDepthChecks()));
+    }
+    public function postMessageAction($iddisc, Request $request){
+      $em = $this->getDoctrine()->getManager();
+      $dev = $em->getRepository('AppBundle:Developpeur')->findOneById($request->get("iddev"));
+      $disc = $em->getRepository('AppBundle:Discussion')->findOneById($iddisc);
+      $message = new Message();
+      $message->setMessage($request->get("description"));
+      $message->setDateenvoi(new \DateTime($request->get('datecrea')));
+      $message->setMessage($request->get('message'));
+      $message->setIddev($dev);
+      $message->setIddisc($disc);
+      $em->persist($message);
+      $em->flush();
+      $serializer = $this->container->get('serializer');
+      $reports = $serializer->serialize($message, 'json', SerializationContext::create()->enableMaxDepthChecks());
+      return new Response($reports); // should be $reports as $doctrineobject is not serialized
+    //  return new JsonResponse($listAdverts);
     }
     /**
      * @Route("/tickets/{iddev}/{idproj}", requirements={"iddev" = "\w+","idproj" = "\w+"})
@@ -215,7 +287,7 @@ class ApiController extends Controller
             ->getQuery()->getResult();
         // $projet = $repository->findBy(array('iddev' => array($dev), 'idproj' =>  array($projet)));
         $serializer = $this->container->get('serializer');
-        $reports = $serializer->serialize($projet, 'json');
+        $reports = $serializer->serialize($projet, 'json', SerializationContext::create()->enableMaxDepthChecks());
         return new Response($reports); // should be $reports as $doctrineobject is not serialized
     //  return new JsonResponse($listAdverts);
     }

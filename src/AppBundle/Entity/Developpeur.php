@@ -1,96 +1,47 @@
 <?php
 
 namespace AppBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * Developpeur
- *
- * @ORM\Table(name="developpeur")
- * @ORM\Entity
  */
 class Developpeur
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
      */
     private $nom;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="prenom", type="text", length=65535, nullable=false)
      */
     private $prenom;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="photo", type="text", length=65535, nullable=false)
      */
     private $photo;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="mdp", type="text", length=65535, nullable=false)
      */
     private $mdp;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Projet", inversedBy="iddev")
-     * @ORM\JoinTable(name="travaille",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="idDev", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="idProj", referencedColumnName="id")
-     *   }
-     * )
+     *@MaxDepth(2)
      */
     private $idproj;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Discussion", inversedBy="iddev")
-     * @ORM\JoinTable(name="repond",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="idDev", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="idDisc", referencedColumnName="id")
-     *   }
-     * )
-     */
-    private $iddisc;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Ticket", inversedBy="iddev")
-     * @ORM\JoinTable(name="affecte",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="idDev", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="idTick", referencedColumnName="id")
-     *   }
-     * )
+     *@MaxDepth(2)
      */
     private $idtick;
 
@@ -100,10 +51,8 @@ class Developpeur
     public function __construct()
     {
         $this->idproj = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->iddisc = new \Doctrine\Common\Collections\ArrayCollection();
         $this->idtick = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
 
     /**
      * Set nom
@@ -257,42 +206,6 @@ class Developpeur
     public function getIdproj()
     {
         return $this->idproj;
-    }
-
-    /**
-     * Add iddisc
-     *
-     * @param \AppBundle\Entity\Discussion $iddisc
-     *
-     * @return Developpeur
-     */
-    public function addIddisc(\AppBundle\Entity\Discussion $iddisc)
-    {
-        $this->iddisc[] = $iddisc;
-
-        return $this;
-    }
-
-    /**
-     * Remove iddisc
-     *
-     * @param \AppBundle\Entity\Discussion $iddisc
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeIddisc(\AppBundle\Entity\Discussion $iddisc)
-    {
-        return $this->iddisc->removeElement($iddisc);
-    }
-
-    /**
-     * Get iddisc
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getIddisc()
-    {
-        return $this->iddisc;
     }
 
     /**

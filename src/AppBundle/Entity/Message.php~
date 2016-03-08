@@ -1,0 +1,60 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Message
+ *
+ * @ORM\Table(name="message", indexes={@ORM\Index(name="idDev", columns={"idDev"}), @ORM\Index(name="idDisc", columns={"idDisc"})})
+ * @ORM\Entity
+ */
+class Message
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="message", type="text", length=65535, nullable=true)
+     */
+    private $message;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateEnvoi", type="date", nullable=true)
+     */
+    private $dateenvoi;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\Discussion
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Discussion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idDisc", referencedColumnName="id")
+     * })
+     */
+    private $iddisc;
+
+    /**
+     * @var \AppBundle\Entity\Developpeur
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Developpeur")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idDev", referencedColumnName="id")
+     * })
+     */
+    private $iddev;
+
+
+}
+

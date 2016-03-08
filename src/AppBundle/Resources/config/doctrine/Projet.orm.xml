@@ -7,23 +7,23 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="nom" type="text" column="nom" length="65535" nullable="false">
+    <field name="nom" type="text" column="nom" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="description" type="text" column="description" length="65535" nullable="false">
+    <field name="description" type="text" column="description" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="categorie" type="text" column="categorie" length="65535" nullable="false">
+    <field name="categorie" type="text" column="categorie" length="65535" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
     <field name="deadline" type="date" column="deadline" nullable="true"/>
-    <field name="datecrea" type="date" column="dateCrea" nullable="false"/>
+    <field name="datecrea" type="date" column="dateCrea" nullable="true"/>
     <many-to-one field="idchef" target-entity="Developpeur" fetch="LAZY">
       <join-columns>
         <join-column name="idChef" referenced-column-name="id"/>
