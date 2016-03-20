@@ -1,0 +1,171 @@
+<a href="index.html" class="logo ng-scope">Cool-Lab</a>
+<!-- Header Navbar: style can be found in header.less -->
+<nav class="navbar navbar-static-top ng-scope" role="navigation" ng-controller="headerController">
+  <!-- Sidebar toggle button-->
+
+  <div class="navbar-right" >
+    <ul class="nav navbar-nav">
+      <!-- Messages: style can be found in dropdown.less-->
+      <li class="dropdown messages-menu">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-globe"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="header">Langues</li>
+          <li>
+            <!-- inner menu: contains the actual data -->
+            <ul class="menu" ng-controller="translatectl">
+              <li>
+                <!-- start message -->
+                <a>
+                  <h4 class="btn ng-scope" ng-click="changeLanguage('en')" >english</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a>
+                  <h4 class="btn ng-scope" ng-click="changeLanguage('fr')" >français</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a>
+                  <h4 class="btn ng-scope" ng-click="changeLanguage('mo')" >mongol</h4>
+                </a>
+              </li>
+              <!-- end message -->
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li class="dropdown messages-menu">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-css3"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="header">Thèmes</li>
+          <li class="header">Couleurs</li>
+          <li>
+            <!-- inner menu: contains the actual data -->
+            <ul class="menu" ng-controller="translatectl">
+              <li>
+                <!-- start message -->
+                <a ng-model="deleted">
+                  <h4 class="btn ng-scope" ng-click="changeTheme('blue')" >blue</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a ng-model="deleted">
+                  <h4 class="btn ng-scope" ng-click="changeTheme('white')" >white</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a ng-model="deleted">
+                  <h4 class="btn ng-scope" ng-click="changeTheme('black')" >black</h4>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="header">Animations</li>
+          <li>
+            <!-- inner menu: contains the actual data -->
+            <ul class="menu" ng-controller="translatectl">
+              <li>
+                <!-- start message -->
+                <a ng-model="deleted">
+                  <h4 class="btn ng-scope" ng-click="changeTheme('fall')" >fall</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a>
+                  <h4 class="btn ng-scope" ng-click="changeTheme('fade')" >fade</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a>
+                  <h4 class="btn ng-scope" ng-click="changeTheme('scale')" >scale</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a>
+                  <h4 class="btn ng-scope" ng-click="changeTheme('cube')" >cube</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a>
+                  <h4 class="btn ng-scope" ng-click="changeTheme('room')" >room</h4>
+                </a>
+              </li>
+              <li>
+                <!-- start message -->
+                <a>
+                  <h4 class="btn ng-scope" ng-click="changeTheme('push')" >push</h4>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="navbar-right" ng-if="logged">
+    <ul class="nav navbar-nav">
+      <li class="dropdown tasks-menu">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-tasks"></i>
+          <span class="label label-danger">{{user[0].idtick.length-doneTickets}}</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="header">Vous avez {{user[0].idtick.length}} Tickets</li>
+          <li>
+            <!-- inner menu: contains the actual data -->
+            <ul class="menu">
+              <li>
+                <!-- Task item -->
+                <a>
+                  <h3>Tickets en cours<small class="pull-right">{{doneTickets/user[0].idtick.length*100}}%</small>
+                                                </h3>
+                  <div class="progress progress-striped xs">
+                    <div class="progress-bar progress-bar-success" style="width: {{doneTickets/user[0].idtick.length*100}}%" role="progressbar" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100">
+                      <span class="sr-only">{{doneTickets/user[0].idtick.length*100}}% fini</span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+
+
+
+
+
+
+
+            </ul>
+          </li>
+          <li class="footer">
+            <a>Voir les Tickets</a>
+          </li>
+        </ul>
+      </li>
+      <!-- User Account: style can be found in dropdown.less -->
+      <li class="dropdown user user-menu ">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-user"></i>
+          <span>{{username}}<i class="caret"></i></span>
+        </a>
+        <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+          <li class="dropdown-header text-center">Compte</li>
+          <li>
+            <button ng-click="logout()" ><i class="fa fa-ban fa-fw pull-right" ></i>Se déconnecter</button>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

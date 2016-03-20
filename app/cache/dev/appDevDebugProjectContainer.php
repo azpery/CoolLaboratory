@@ -69,6 +69,13 @@ class appDevDebugProjectContainer extends Container
             'doctrine_cache.providers.doctrine.orm.default_metadata_cache' => 'getDoctrineCache_Providers_Doctrine_Orm_DefaultMetadataCacheService',
             'doctrine_cache.providers.doctrine.orm.default_query_cache' => 'getDoctrineCache_Providers_Doctrine_Orm_DefaultQueryCacheService',
             'doctrine_cache.providers.doctrine.orm.default_result_cache' => 'getDoctrineCache_Providers_Doctrine_Orm_DefaultResultCacheService',
+            'eko_feed.feed' => 'getEkoFeed_FeedService',
+            'eko_feed.feed.dump' => 'getEkoFeed_Feed_DumpService',
+            'eko_feed.feed.manager' => 'getEkoFeed_Feed_ManagerService',
+            'eko_feed.feed.reader' => 'getEkoFeed_Feed_ReaderService',
+            'eko_feed.formatter.atom' => 'getEkoFeed_Formatter_AtomService',
+            'eko_feed.formatter.rss' => 'getEkoFeed_Formatter_RssService',
+            'eko_feed.hydrator.default' => 'getEkoFeed_Hydrator_DefaultService',
             'file_locator' => 'getFileLocatorService',
             'filesystem' => 'getFilesystemService',
             'form.csrf_provider' => 'getForm_CsrfProviderService',
@@ -128,13 +135,11 @@ class appDevDebugProjectContainer extends Container
             'fos_rest.request.param_fetcher' => 'getFosRest_Request_ParamFetcherService',
             'fos_rest.request.param_fetcher.reader' => 'getFosRest_Request_ParamFetcher_ReaderService',
             'fos_rest.routing.loader.controller' => 'getFosRest_Routing_Loader_ControllerService',
-            'fos_rest.routing.loader.directory' => 'getFosRest_Routing_Loader_DirectoryService',
             'fos_rest.routing.loader.processor' => 'getFosRest_Routing_Loader_ProcessorService',
             'fos_rest.routing.loader.reader.action' => 'getFosRest_Routing_Loader_Reader_ActionService',
             'fos_rest.routing.loader.reader.controller' => 'getFosRest_Routing_Loader_Reader_ControllerService',
             'fos_rest.routing.loader.xml_collection' => 'getFosRest_Routing_Loader_XmlCollectionService',
             'fos_rest.routing.loader.yaml_collection' => 'getFosRest_Routing_Loader_YamlCollectionService',
-            'fos_rest.serializer' => 'getFosRest_SerializerService',
             'fos_rest.serializer.exception_wrapper_normalizer' => 'getFosRest_Serializer_ExceptionWrapperNormalizerService',
             'fos_rest.serializer.exception_wrapper_serialize_handler' => 'getFosRest_Serializer_ExceptionWrapperSerializeHandlerService',
             'fos_rest.view.exception_wrapper_handler' => 'getFosRest_View_ExceptionWrapperHandlerService',
@@ -353,6 +358,7 @@ class appDevDebugProjectContainer extends Container
             'fos_rest.exception_handler' => 'fos_rest.view.exception_wrapper_handler',
             'fos_rest.inflector' => 'fos_rest.inflector.doctrine',
             'fos_rest.router' => 'router',
+            'fos_rest.serializer' => 'jms_serializer',
             'fos_rest.templating' => 'templating',
             'fos_user.change_password.form.handler' => 'fos_user.change_password.form.handler.default',
             'fos_user.util.username_canonicalizer' => 'fos_user.util.email_canonicalizer',
@@ -719,11 +725,11 @@ class appDevDebugProjectContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return \EntityManager56cc2b44b6b38_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager A EntityManager56cc2b44b6b38_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager instance.
+     * @return \EntityManager56eeca3fe6701_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager A EntityManager56eeca3fe6701_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager instance.
      */
     protected function getDoctrine_Orm_DefaultEntityManagerService()
     {
-        require_once (__DIR__.'/jms_diextra/doctrine/EntityManager_56cc2b44b6b38.php');
+        require_once (__DIR__.'/jms_diextra/doctrine/EntityManager_56eeca3fe6701.php');
 
         $a = new \Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver(array(($this->targetDirs[3].'/src/AppBundle/Resources/config/doctrine') => 'AppBundle\\Entity', ($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine') => 'FOS\\UserBundle\\Entity'));
         $a->setGlobalBasename('mapping');
@@ -750,7 +756,7 @@ class appDevDebugProjectContainer extends Container
         $d = \Doctrine\ORM\EntityManager::create($this->get('doctrine.dbal.default_connection'), $c);
         $this->get('doctrine.orm.default_manager_configurator')->configure($d);
 
-        return $this->services['doctrine.orm.default_entity_manager'] = new \EntityManager56cc2b44b6b38_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager($d, $this);
+        return $this->services['doctrine.orm.default_entity_manager'] = new \EntityManager56eeca3fe6701_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager($d, $this);
     }
 
     /**
@@ -854,6 +860,109 @@ class appDevDebugProjectContainer extends Container
         $instance->setNamespace('sf2orm_default_7da858ef8051c59e157e42f89b2668d1866294e1602af26a5be95fb31868d7e4');
 
         return $instance;
+    }
+
+    /**
+     * Gets the 'eko_feed.feed' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Eko\FeedBundle\Feed\Feed A Eko\FeedBundle\Feed\Feed instance.
+     */
+    protected function getEkoFeed_FeedService()
+    {
+        $this->services['eko_feed.feed'] = $instance = new \Eko\FeedBundle\Feed\Feed('');
+
+        $instance->setRouter($this->get('router'));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the 'eko_feed.feed.dump' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Eko\FeedBundle\Service\FeedDumpService A Eko\FeedBundle\Service\FeedDumpService instance.
+     */
+    protected function getEkoFeed_Feed_DumpService()
+    {
+        $this->services['eko_feed.feed.dump'] = $instance = new \Eko\FeedBundle\Service\FeedDumpService($this->get('eko_feed.feed.manager'), $this->get('doctrine.orm.default_entity_manager'), $this->get('filesystem'));
+
+        $instance->setRootDir($this->targetDirs[2]);
+
+        return $instance;
+    }
+
+    /**
+     * Gets the 'eko_feed.feed.manager' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Eko\FeedBundle\Feed\FeedManager A Eko\FeedBundle\Feed\FeedManager instance.
+     */
+    protected function getEkoFeed_Feed_ManagerService()
+    {
+        return $this->services['eko_feed.feed.manager'] = new \Eko\FeedBundle\Feed\FeedManager($this->get('router'), array('feeds' => array('rss' => array('title' => 'Activité du coolLab', 'description' => 'Les dernières activitées', 'link' => array('uri' => 'http://77.153.245.34/CoolLaboratory/web/', 'route_params' => array()), 'encoding' => 'utf-8', 'author' => 'RD / SN')), 'hydrator' => 'eko_feed.hydrator.default', 'translation_domain' => NULL), array('rss' => $this->get('eko_feed.formatter.rss'), 'atom' => $this->get('eko_feed.formatter.atom')));
+    }
+
+    /**
+     * Gets the 'eko_feed.feed.reader' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Eko\FeedBundle\Feed\Reader A Eko\FeedBundle\Feed\Reader instance.
+     */
+    protected function getEkoFeed_Feed_ReaderService()
+    {
+        $this->services['eko_feed.feed.reader'] = $instance = new \Eko\FeedBundle\Feed\Reader();
+
+        $instance->setHydrator($this->get('eko_feed.hydrator.default'));
+
+        return $instance;
+    }
+
+    /**
+     * Gets the 'eko_feed.formatter.atom' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Eko\FeedBundle\Formatter\AtomFormatter A Eko\FeedBundle\Formatter\AtomFormatter instance.
+     */
+    protected function getEkoFeed_Formatter_AtomService()
+    {
+        return $this->services['eko_feed.formatter.atom'] = new \Eko\FeedBundle\Formatter\AtomFormatter($this->get('translator'), NULL);
+    }
+
+    /**
+     * Gets the 'eko_feed.formatter.rss' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Eko\FeedBundle\Formatter\RssFormatter A Eko\FeedBundle\Formatter\RssFormatter instance.
+     */
+    protected function getEkoFeed_Formatter_RssService()
+    {
+        return $this->services['eko_feed.formatter.rss'] = new \Eko\FeedBundle\Formatter\RssFormatter($this->get('translator'), NULL);
+    }
+
+    /**
+     * Gets the 'eko_feed.hydrator.default' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Eko\FeedBundle\Hydrator\DefaultHydrator A Eko\FeedBundle\Hydrator\DefaultHydrator instance.
+     */
+    protected function getEkoFeed_Hydrator_DefaultService()
+    {
+        return $this->services['eko_feed.hydrator.default'] = new \Eko\FeedBundle\Hydrator\DefaultHydrator();
     }
 
     /**
@@ -1520,11 +1629,11 @@ class appDevDebugProjectContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return \FOS\RestBundle\Negotiation\FormatNegotiator A FOS\RestBundle\Negotiation\FormatNegotiator instance.
+     * @return \FOS\RestBundle\Util\FormatNegotiator A FOS\RestBundle\Util\FormatNegotiator instance.
      */
     protected function getFosRest_ExceptionFormatNegotiatorService()
     {
-        return $this->services['fos_rest.exception_format_negotiator'] = new \FOS\RestBundle\Negotiation\FormatNegotiator();
+        return $this->services['fos_rest.exception_format_negotiator'] = new \FOS\RestBundle\Util\FormatNegotiator();
     }
 
     /**
@@ -1533,11 +1642,11 @@ class appDevDebugProjectContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return \FOS\RestBundle\Negotiation\FormatNegotiator A FOS\RestBundle\Negotiation\FormatNegotiator instance.
+     * @return \FOS\RestBundle\Util\FormatNegotiator A FOS\RestBundle\Util\FormatNegotiator instance.
      */
     protected function getFosRest_FormatNegotiatorService()
     {
-        return $this->services['fos_rest.format_negotiator'] = new \FOS\RestBundle\Negotiation\FormatNegotiator();
+        return $this->services['fos_rest.format_negotiator'] = new \FOS\RestBundle\Util\FormatNegotiator();
     }
 
     /**
@@ -1546,11 +1655,11 @@ class appDevDebugProjectContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return \FOS\RestBundle\Inflector\DoctrineInflector A FOS\RestBundle\Inflector\DoctrineInflector instance.
+     * @return \FOS\RestBundle\Util\Inflector\DoctrineInflector A FOS\RestBundle\Util\Inflector\DoctrineInflector instance.
      */
     protected function getFosRest_Inflector_DoctrineService()
     {
-        return $this->services['fos_rest.inflector.doctrine'] = new \FOS\RestBundle\Inflector\DoctrineInflector();
+        return $this->services['fos_rest.inflector.doctrine'] = new \FOS\RestBundle\Util\Inflector\DoctrineInflector();
     }
 
     /**
@@ -1632,19 +1741,6 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
-     * Gets the 'fos_rest.routing.loader.directory' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * @return \FOS\RestBundle\Routing\Loader\DirectoryRouteLoader A FOS\RestBundle\Routing\Loader\DirectoryRouteLoader instance.
-     */
-    protected function getFosRest_Routing_Loader_DirectoryService()
-    {
-        return $this->services['fos_rest.routing.loader.directory'] = new \FOS\RestBundle\Routing\Loader\DirectoryRouteLoader($this->get('fos_rest.routing.loader.processor'));
-    }
-
-    /**
      * Gets the 'fos_rest.routing.loader.processor' service.
      *
      * This service is shared.
@@ -1707,21 +1803,6 @@ class appDevDebugProjectContainer extends Container
     protected function getFosRest_Routing_Loader_YamlCollectionService()
     {
         return $this->services['fos_rest.routing.loader.yaml_collection'] = new \FOS\RestBundle\Routing\Loader\RestYamlCollectionLoader($this->get('file_locator'), $this->get('fos_rest.routing.loader.processor'), true, array('json' => false, 'xml' => false, 'html' => true), 'json');
-    }
-
-    /**
-     * Gets the 'fos_rest.serializer' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * @param bool    $lazyLoad whether to try lazy-loading the service with a proxy
-     *
-     * @return \FOS\RestBundle\Serializer\JMSSerializerAdapter A FOS\RestBundle\Serializer\JMSSerializerAdapter instance.
-     */
-    protected function getFosRest_SerializerService($lazyLoad = true)
-    {
-        return $this->services['fos_rest.serializer'] = new \FOS\RestBundle\Serializer\JMSSerializerAdapter($this->get('jms_serializer'));
     }
 
     /**
@@ -1789,11 +1870,11 @@ class appDevDebugProjectContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return \FOS\RestBundle\Validator\ViolationFormatter A FOS\RestBundle\Validator\ViolationFormatter instance.
+     * @return \FOS\RestBundle\Util\ViolationFormatter A FOS\RestBundle\Util\ViolationFormatter instance.
      */
     protected function getFosRest_ViolationFormatterService()
     {
-        return $this->services['fos_rest.violation_formatter'] = new \FOS\RestBundle\Validator\ViolationFormatter();
+        return $this->services['fos_rest.violation_formatter'] = new \FOS\RestBundle\Util\ViolationFormatter();
     }
 
     /**
@@ -2416,7 +2497,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getJmsSerializer_MetadataDriverService()
     {
-        $a = new \Metadata\Driver\FileLocator(array('Symfony\\Bundle\\FrameworkBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer'), 'Symfony\\Bundle\\SecurityBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer'), 'Symfony\\Bundle\\TwigBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer'), 'Symfony\\Bundle\\MonologBundle' => ($this->targetDirs[3].'/vendor/symfony/monolog-bundle/Resources/config/serializer'), 'Symfony\\Bundle\\SwiftmailerBundle' => ($this->targetDirs[3].'/vendor/symfony/swiftmailer-bundle/Resources/config/serializer'), 'Symfony\\Bundle\\AsseticBundle' => ($this->targetDirs[3].'/vendor/symfony/assetic-bundle/Resources/config/serializer'), 'Doctrine\\Bundle\\DoctrineBundle' => ($this->targetDirs[3].'/vendor/doctrine/doctrine-bundle/Resources/config/serializer'), 'Sensio\\Bundle\\FrameworkExtraBundle' => ($this->targetDirs[3].'/vendor/sensio/framework-extra-bundle/Resources/config/serializer'), 'JMS\\AopBundle' => ($this->targetDirs[3].'/vendor/jms/aop-bundle/Resources/config/serializer'), 'JMS\\DiExtraBundle' => ($this->targetDirs[3].'/vendor/jms/di-extra-bundle/Resources/config/serializer'), 'JMS\\SecurityExtraBundle' => ($this->targetDirs[3].'/vendor/jms/security-extra-bundle/Resources/config/serializer'), 'AppBundle' => ($this->targetDirs[3].'/src/AppBundle/Resources/config/serializer'), 'FOS\\RestBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/Resources/config/serializer'), 'FOS\\UserBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer'), 'JMS\\SerializerBundle' => ($this->targetDirs[3].'/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer'), 'Symfony\\Bundle\\WebProfilerBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer'), 'Sensio\\Bundle\\DistributionBundle' => ($this->targetDirs[3].'/vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/config/serializer'), 'Sensio\\Bundle\\GeneratorBundle' => ($this->targetDirs[3].'/vendor/sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/config/serializer')));
+        $a = new \Metadata\Driver\FileLocator(array('Symfony\\Bundle\\FrameworkBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer'), 'Symfony\\Bundle\\SecurityBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer'), 'Symfony\\Bundle\\TwigBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer'), 'Symfony\\Bundle\\MonologBundle' => ($this->targetDirs[3].'/vendor/symfony/monolog-bundle/Resources/config/serializer'), 'Symfony\\Bundle\\SwiftmailerBundle' => ($this->targetDirs[3].'/vendor/symfony/swiftmailer-bundle/Resources/config/serializer'), 'Symfony\\Bundle\\AsseticBundle' => ($this->targetDirs[3].'/vendor/symfony/assetic-bundle/Resources/config/serializer'), 'Doctrine\\Bundle\\DoctrineBundle' => ($this->targetDirs[3].'/vendor/doctrine/doctrine-bundle/Resources/config/serializer'), 'Sensio\\Bundle\\FrameworkExtraBundle' => ($this->targetDirs[3].'/vendor/sensio/framework-extra-bundle/Resources/config/serializer'), 'JMS\\AopBundle' => ($this->targetDirs[3].'/vendor/jms/aop-bundle/Resources/config/serializer'), 'JMS\\DiExtraBundle' => ($this->targetDirs[3].'/vendor/jms/di-extra-bundle/Resources/config/serializer'), 'JMS\\SecurityExtraBundle' => ($this->targetDirs[3].'/vendor/jms/security-extra-bundle/Resources/config/serializer'), 'AppBundle' => ($this->targetDirs[3].'/src/AppBundle/Resources/config/serializer'), 'Eko\\FeedBundle' => ($this->targetDirs[3].'/vendor/eko/feedbundle/Resources/config/serializer'), 'FOS\\RestBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/Resources/config/serializer'), 'FOS\\UserBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer'), 'JMS\\SerializerBundle' => ($this->targetDirs[3].'/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer'), 'Symfony\\Bundle\\WebProfilerBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer'), 'Sensio\\Bundle\\DistributionBundle' => ($this->targetDirs[3].'/vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/config/serializer'), 'Sensio\\Bundle\\GeneratorBundle' => ($this->targetDirs[3].'/vendor/sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/config/serializer')));
 
         return $this->services['jms_serializer.metadata_driver'] = new \JMS\Serializer\Metadata\Driver\DoctrineTypeDriver(new \Metadata\Driver\DriverChain(array(0 => new \JMS\Serializer\Metadata\Driver\YamlDriver($a), 1 => new \JMS\Serializer\Metadata\Driver\XmlDriver($a), 2 => new \JMS\Serializer\Metadata\Driver\PhpDriver($a), 3 => new \JMS\Serializer\Metadata\Driver\AnnotationDriver($this->get('annotation_reader')))), $this->get('doctrine'));
     }
@@ -3008,7 +3089,6 @@ class appDevDebugProjectContainer extends Container
         $d->addLoader(new \Symfony\Component\Routing\Loader\AnnotationFileLoader($a, $c));
         $d->addLoader($c);
         $d->addLoader($this->get('fos_rest.routing.loader.controller'));
-        $d->addLoader($this->get('fos_rest.routing.loader.directory'));
         $d->addLoader($this->get('fos_rest.routing.loader.yaml_collection'));
         $d->addLoader($this->get('fos_rest.routing.loader.xml_collection'));
 
@@ -3272,7 +3352,7 @@ class appDevDebugProjectContainer extends Container
         $j = new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($f, $e, array(), $c);
         $j->setOptions(array('login_path' => '/login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'));
 
-        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => $this->get('security.channel_listener'), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($a, array(0 => $b), 'main', $c, $d), 2 => $h, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($a, $g, $this->get('security.authentication.session_strategy'), $e, 'main', $i, $j, array('check_path' => '/login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $c, $d, $this->get('form.csrf_provider')), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($a, '56cc2b449df110.61274508', $c, $g), 5 => new \Symfony\Component\Security\Http\Firewall\SwitchUserListener($a, $b, $this->get('security.user_checker'), 'main', $this->get('security.access.decision_manager'), $c, '_switch_user', 'ROLE_ALLOWED_TO_SWITCH', $d), 6 => $this->get('security.access_listener')), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($a, $this->get('security.authentication.trust_resolver'), $e, 'main', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $e, '/login', false), NULL, NULL, $c, false));
+        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => $this->get('security.channel_listener'), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($a, array(0 => $b), 'main', $c, $d), 2 => $h, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($a, $g, $this->get('security.authentication.session_strategy'), $e, 'main', $i, $j, array('check_path' => '/login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $c, $d, $this->get('form.csrf_provider')), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($a, '56eeca3f7c3977.71889779', $c, $g), 5 => new \Symfony\Component\Security\Http\Firewall\SwitchUserListener($a, $b, $this->get('security.user_checker'), 'main', $this->get('security.access.decision_manager'), $c, '_switch_user', 'ROLE_ALLOWED_TO_SWITCH', $d), 6 => $this->get('security.access_listener')), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($a, $this->get('security.authentication.trust_resolver'), $e, 'main', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $e, '/login', false), NULL, NULL, $c, false));
     }
 
     /**
@@ -4434,7 +4514,7 @@ class appDevDebugProjectContainer extends Container
     {
         $this->services['validator.builder'] = $instance = \Symfony\Component\Validator\Validation::createValidatorBuilder();
 
-        $instance->setConstraintValidatorFactory(new \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory($this, array('validator.expression' => 'validator.expression', 'Symfony\\Component\\Validator\\Constraints\\EmailValidator' => 'validator.email', 'security.validator.user_password' => 'security.validator.user_password', 'doctrine.orm.validator.unique' => 'doctrine.orm.validator.unique')));
+        $instance->setConstraintValidatorFactory(new \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory($this, array('validator.expression' => 'validator.expression', 'Symfony\\Component\\Validator\\Constraints\\ExpressionValidator' => 'validator.expression', 'Symfony\\Component\\Validator\\Constraints\\EmailValidator' => 'validator.email', 'security.validator.user_password' => 'security.validator.user_password', 'Symfony\\Component\\Security\\Core\\Validator\\Constraints\\UserPasswordValidator' => 'security.validator.user_password', 'doctrine.orm.validator.unique' => 'doctrine.orm.validator.unique', 'Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntityValidator' => 'doctrine.orm.validator.unique')));
         $instance->setTranslator($this->get('translator'));
         $instance->setTranslationDomain('validators');
         $instance->addXmlMappings(array(0 => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/config/validation.xml'), 1 => ($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/validation.xml')));
@@ -4729,7 +4809,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_ManagerService()
     {
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => $this->get('security.authentication.provider.wsse.wsse_secured'), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username_email'), $this->get('security.user_checker'), 'main', $this->get('security.encoder_factory'), true), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('56cc2b449df110.61274508')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => $this->get('security.authentication.provider.wsse.wsse_secured'), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username_email'), $this->get('security.user_checker'), 'main', $this->get('security.encoder_factory'), true), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('56eeca3f7c3977.71889779')), true);
 
         $instance->setEventDispatcher($this->get('debug.event_dispatcher'));
 
@@ -5005,6 +5085,7 @@ class appDevDebugProjectContainer extends Container
                 'JMSDiExtraBundle' => 'JMS\\DiExtraBundle\\JMSDiExtraBundle',
                 'JMSSecurityExtraBundle' => 'JMS\\SecurityExtraBundle\\JMSSecurityExtraBundle',
                 'AppBundle' => 'AppBundle\\AppBundle',
+                'EkoFeedBundle' => 'Eko\\FeedBundle\\EkoFeedBundle',
                 'FOSRestBundle' => 'FOS\\RestBundle\\FOSRestBundle',
                 'FOSUserBundle' => 'FOS\\UserBundle\\FOSUserBundle',
                 'JMSSerializerBundle' => 'JMS\\SerializerBundle\\JMSSerializerBundle',
@@ -5571,11 +5652,14 @@ class appDevDebugProjectContainer extends Container
             'jms_di_extra.cache_dir' => (__DIR__.'/jms_diextra'),
             'jms_di_extra.disable_grep' => false,
             'jms_di_extra.doctrine_integration' => true,
+            'jms_di_extra.annotation_patterns' => array(
+                0 => 'JMS\\DiExtraBundle\\Annotation',
+            ),
             'jms_di_extra.cache_warmer.controller_file_blacklist' => array(
 
             ),
-            'jms_di_extra.doctrine_integration.entity_manager.file' => (__DIR__.'/jms_diextra/doctrine/EntityManager_56cc2b44b6b38.php'),
-            'jms_di_extra.doctrine_integration.entity_manager.class' => 'EntityManager56cc2b44b6b38_546a8d27f194334ee012bfe64f629947b07e4919\\__CG__\\Doctrine\\ORM\\EntityManager',
+            'jms_di_extra.doctrine_integration.entity_manager.file' => (__DIR__.'/jms_diextra/doctrine/EntityManager_56eeca3fe6701.php'),
+            'jms_di_extra.doctrine_integration.entity_manager.class' => 'EntityManager56eeca3fe6701_546a8d27f194334ee012bfe64f629947b07e4919\\__CG__\\Doctrine\\ORM\\EntityManager',
             'security.secured_services' => array(
 
             ),
@@ -5619,6 +5703,32 @@ class appDevDebugProjectContainer extends Container
             'security.iddqd_aliases' => array(
 
             ),
+            'eko_feed.feed.manager.class' => 'Eko\\FeedBundle\\Feed\\FeedManager',
+            'eko_feed.feed.class' => 'Eko\\FeedBundle\\Feed\\Feed',
+            'eko_feed.feed.reader.class' => 'Eko\\FeedBundle\\Feed\\Reader',
+            'eko_feed.feed.dump.class' => 'Eko\\FeedBundle\\Service\\FeedDumpService',
+            'eko_feed.formatter.rss.class' => 'Eko\\FeedBundle\\Formatter\\RssFormatter',
+            'eko_feed.formatter.atom.class' => 'Eko\\FeedBundle\\Formatter\\AtomFormatter',
+            'eko_feed.hydrator.default.class' => 'Eko\\FeedBundle\\Hydrator\\DefaultHydrator',
+            'eko_feed.config' => array(
+                'feeds' => array(
+                    'rss' => array(
+                        'title' => 'Activité du coolLab',
+                        'description' => 'Les dernières activitées',
+                        'link' => array(
+                            'uri' => 'http://77.153.245.34/CoolLaboratory/web/',
+                            'route_params' => array(
+
+                            ),
+                        ),
+                        'encoding' => 'utf-8',
+                        'author' => 'RD / SN',
+                    ),
+                ),
+                'hydrator' => 'eko_feed.hydrator.default',
+                'translation_domain' => NULL,
+            ),
+            'eko_feed.translation_domain' => NULL,
             'fos_rest.serializer.exclusion_strategy.version' => '',
             'fos_rest.serializer.exclusion_strategy.groups' => '',
             'fos_rest.view_handler.jsonp.callback_param' => '',
@@ -5632,10 +5742,10 @@ class appDevDebugProjectContainer extends Container
             'fos_rest.routing.loader.processor.class' => 'FOS\\RestBundle\\Routing\\Loader\\RestRouteProcessor',
             'fos_rest.routing.loader.reader.controller.class' => 'FOS\\RestBundle\\Routing\\Loader\\Reader\\RestControllerReader',
             'fos_rest.routing.loader.reader.action.class' => 'FOS\\RestBundle\\Routing\\Loader\\Reader\\RestActionReader',
-            'fos_rest.format_negotiator.class' => 'FOS\\RestBundle\\Negotiation\\FormatNegotiator',
-            'fos_rest.inflector.class' => 'FOS\\RestBundle\\Inflector\\DoctrineInflector',
+            'fos_rest.format_negotiator.class' => 'FOS\\RestBundle\\Util\\FormatNegotiator',
+            'fos_rest.inflector.class' => 'FOS\\RestBundle\\Util\\Inflector\\DoctrineInflector',
             'fos_rest.request_matcher.class' => 'Symfony\\Component\\HttpFoundation\\RequestMatcher',
-            'fos_rest.violation_formatter.class' => 'FOS\\RestBundle\\Validator\\ViolationFormatter',
+            'fos_rest.violation_formatter.class' => 'FOS\\RestBundle\\Util\\ViolationFormatter',
             'fos_rest.request.param_fetcher.class' => 'FOS\\RestBundle\\Request\\ParamFetcher',
             'fos_rest.request.param_fetcher.reader.class' => 'FOS\\RestBundle\\Request\\ParamReader',
             'fos_rest.cache_dir' => (__DIR__.'/fos_rest'),

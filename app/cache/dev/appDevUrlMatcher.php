@@ -152,9 +152,19 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::indexAction',  '_route' => 'app_default_index',);
         }
 
+        // app_default_getuser
+        if ($pathinfo === '/user') {
+            return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::getUserAction',  '_route' => 'app_default_getuser',);
+        }
+
         // app_default_salt
         if (preg_match('#^/(?P<username>\\w+)/salt$#s', $pathinfo, $matches)) {
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'app_default_salt')), array (  '_controller' => 'AppBundle\\Controller\\DefaultController::saltAction',));
+        }
+
+        // app_default_rss
+        if ($pathinfo === '/rss') {
+            return array (  '_format' => 'xml',  '_controller' => 'AppBundle\\Controller\\DefaultController::rssAction',  '_route' => 'app_default_rss',);
         }
 
         // app_default_signup
@@ -408,6 +418,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_projets')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getProjetsAction',  '_format' => 'json',));
             }
             not_api_get_projets:
+
+            // api_get_rss
+            if (0 === strpos($pathinfo, '/api/rsses') && preg_match('#^/api/rsses/(?P<idproj>[^/\\.]++)(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_api_get_rss;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_rss')), array (  '_controller' => 'AppBundle\\Controller\\ApiController::getRssAction',  '_format' => 'json',));
+            }
+            not_api_get_rss:
 
             // api_get_one_projets
             if (0 === strpos($pathinfo, '/api/ones') && preg_match('#^/api/ones/(?P<idProjet>[^/]++)/projets(?:\\.(?P<_format>json|xml|html))?$#s', $pathinfo, $matches)) {

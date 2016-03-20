@@ -1,0 +1,39 @@
+<!-- Main content -->
+<div class="page_block page_header_main">
+  <div class="page_block_inner page_header_main_inner">
+    <h1 translate="headerProject">Projets</h1>
+
+    <p class="subtitle" translate="pProjet">Tous les projets sur lesquel vous travaillez</p>
+  </div>
+</div>
+<div class="page_action_bar page_block">
+  <div class="page_action_bar_inner page_block_inner" >
+    <!-- ngIf: logged_user.canCreateProject() -->
+    <div class="page_action_bar_left" >
+      <a class="button small default" href="#/projets/ajouter" translate="btnNvProjet">+ Commencer un nouveau projet</a>
+    </div>
+  </div>
+</div>
+<div class="row" style="margin-bottom:5px;">
+  <div class="project card" ng-repeat="projet in projets[0].idproj">
+    <div>
+      <a class="card_main" href="#/projects/{{ projet.id }}">
+        <div class="card_header">
+          <h2>{{ projet.nom }}</h2>
+          <p><span translate='by'>par</span>
+          <span>{{ projet.idchef.nom || "Moi" }} {{ projet.idchef.prenom }}</span>
+          </p>
+        </div>
+
+        <div class="card_body"></div>
+
+        <div class="card_footer">
+          <div class="card_footer_inner">
+            <span class="item_label" style="background-color: rgb(64, 150, 219);"><span  class="contrast_light">{{ projet.nom }}</span></span>
+            <p></p>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>

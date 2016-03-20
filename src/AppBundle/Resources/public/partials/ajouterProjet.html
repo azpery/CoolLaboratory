@@ -1,0 +1,51 @@
+<div class="page_form labels_on_the_left narrow page" id="project_form" page-title="New Project" main-section="projects">
+  <div class="page_inner">
+
+    <!-- ngIf: !project.id -->
+    <div id="back_button" class="page_block" title="Projects" url="projects" ng-if="!project.id">
+      <div class="page_block_inner">
+        <a href="#/index" class="small button" translate="btnRetourProjets">↩ Projets</a>
+      </div>
+    </div>
+    <form method="post" name="project_form" ng-submit="createProjet()" class=" ng-pristine ang_form ng-invalid ng-invalid-required ng-valid-maxlength ng-valid ng-scope">
+      <div class="page_main">
+        <div class="page_main_inner">
+          <div class="form_section form_header">
+            <h1 class="no_border" translate="headerNvProjet">Nouveau projet</h1>
+            <h2 class="form_subtitle" translate="pNvProjet">Après avoir créé ce nouveau projet, vous pourrez commencer à travailler avec vos Cool laborateurs.</h2>
+          </div>
+          <div class="form_block with_background">
+            <div class="form_section name form_field_validation" form-field="name">
+              <div class="form_field">
+                <label class="form_field_label" translate="labelNomProj">Nom du projet<span class="asterisk">*</span></label>
+                <input type="text" name="name" ng-model="projet.nom"translate translate-attr-placeholder="placeHolderNomProj" ng-maxlength="150" maxlength="150" autocomplete="off" class="ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-touched">
+                <div class="form_field_validation_message">Required</div>
+              </div>
+            </div>
+
+            <div class="form_section description">
+              <div class="form_field">
+                <label class="form_field_label" translate="labelDescription">Description</label>
+                <textarea translate translate-attr-placeholder="placeHolderDescription" maxlength="191" ng-maxlength="191" ng-model="projet.description" class="ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-touched"></textarea>
+              </div>
+            </div>
+            <div class="form_section with_padding">
+
+
+              <div class="form_field name form_field_validation">
+                <label class="form_field_label" translate="labelCateg">Catégorie</label>
+
+                <input type="text" name="name" ng-model="projet.categorie" translate translate-attr-placeholder="placeHolderCategorie" ng-maxlength="150" maxlength="150" autocomplete="off" class="ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-touched">
+                  </input>
+                  <p class="fvl_aid" translate="helpCateg">Choisissez un catégorie pour rester organisé</p>
+              </div>
+            </div>
+          </div>
+          <div class="form_buttons">
+            <button class="default submit_button" type="submit" translate="btnValidNvProjet">Créer le projet</button>
+            <a class="" href="#/index" type="button" translate="btnAnnuler">Annuler</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>

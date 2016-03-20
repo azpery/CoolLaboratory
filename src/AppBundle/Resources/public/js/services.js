@@ -4,7 +4,7 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('myApp.services', ['ngResource']).
+angular.module('CoolLab.services', ['ngResource','ngCookies']).
   factory('Base64', function() {
     var keyStr = 'ABCDEFGHIJKLMNOP' +
         'QRSTUVWXYZabcdef' +
@@ -17,23 +17,23 @@ angular.module('myApp.services', ['ngResource']).
             var chr1, chr2, chr3 = "";
             var enc1, enc2, enc3, enc4 = "";
             var i = 0;
- 
+
             do {
                 chr1 = input.charCodeAt(i++);
                 chr2 = input.charCodeAt(i++);
                 chr3 = input.charCodeAt(i++);
- 
+
                 enc1 = chr1 >> 2;
                 enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
                 enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
                 enc4 = chr3 & 63;
- 
+
                 if (isNaN(chr2)) {
                     enc3 = enc4 = 64;
                 } else if (isNaN(chr3)) {
                     enc4 = 64;
                 }
- 
+
                 output = output +
                     keyStr.charAt(enc1) +
                     keyStr.charAt(enc2) +
@@ -42,16 +42,16 @@ angular.module('myApp.services', ['ngResource']).
                 chr1 = chr2 = chr3 = "";
                 enc1 = enc2 = enc3 = enc4 = "";
             } while (i < input.length);
- 
+
             return output;
         },
- 
+
         decode: function (input) {
             var output = "";
             var chr1, chr2, chr3 = "";
             var enc1, enc2, enc3, enc4 = "";
             var i = 0;
- 
+
             // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
             var base64test = /[^A-Za-z0-9\+\/\=]/g;
             if (base64test.exec(input)) {
@@ -60,31 +60,31 @@ angular.module('myApp.services', ['ngResource']).
                     "Expect errors in decoding.");
             }
             input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
- 
+
             do {
                 enc1 = keyStr.indexOf(input.charAt(i++));
                 enc2 = keyStr.indexOf(input.charAt(i++));
                 enc3 = keyStr.indexOf(input.charAt(i++));
                 enc4 = keyStr.indexOf(input.charAt(i++));
- 
+
                 chr1 = (enc1 << 2) | (enc2 >> 4);
                 chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
                 chr3 = ((enc3 & 3) << 6) | enc4;
- 
+
                 output = output + String.fromCharCode(chr1);
- 
+
                 if (enc3 != 64) {
                     output = output + String.fromCharCode(chr2);
                 }
                 if (enc4 != 64) {
                     output = output + String.fromCharCode(chr3);
                 }
- 
+
                 chr1 = chr2 = chr3 = "";
                 enc1 = enc2 = enc3 = enc4 = "";
- 
+
             } while (i < input.length);
- 
+
             return output;
         }
     };
@@ -150,6 +150,7 @@ factory('TokenHandler', [ '$http', 'Base64', function($http, Base64) {
         }
 
         return wrapperResource;
+
     };
 
     // Token wrapper
@@ -158,7 +159,6 @@ factory('TokenHandler', [ '$http', 'Base64', function($http, Base64) {
         resource[action] = function ( data, success, error ) {
             if ( (typeof data.username != 'undefined') && (typeof data.secret != 'undefined') ) {
                 $http.defaults.headers.common['X-WSSE'] = tokenHandler.getCredentials(data.username, data.secret);
-                delete data.username;
                 delete data.secret;
             }
             return resource['_'+action](
@@ -176,11 +176,11 @@ factory('TokenHandler', [ '$http', 'Base64', function($http, Base64) {
             return ("0" + num).slice(-2);
         };
 
-        return [d.getUTCFullYear(), 
-                pad(d.getUTCMonth() + 1), 
-                pad(d.getUTCDate())].join("-") + "T" + 
-               [pad(d.getUTCHours()), 
-                pad(d.getUTCMinutes()), 
+        return [d.getUTCFullYear(),
+                pad(d.getUTCMonth() + 1),
+                pad(d.getUTCDate())].join("-") + "T" +
+               [pad(d.getUTCHours()),
+                pad(d.getUTCMinutes()),
                 pad(d.getUTCSeconds())].join(":") + "Z";
     };
 
@@ -188,7 +188,7 @@ factory('TokenHandler', [ '$http', 'Base64', function($http, Base64) {
 }]).
 factory('Salt', ['$resource', function($resource) {
     // Service to load Salt
-    return $resource('/app_dev.php/:username/salt', {username:'@id'});
+    return $resource('./app_dev.php/:username/salt', {username:'@username'});
 }]).
 factory('Digest', ['$q', function($q) {
     var factory = {
@@ -212,7 +212,7 @@ factory('Digest', ['$q', function($q) {
 
             var salted = secret + '{' + salt + '}';
             var digest = salted;
-            
+
             deferred.resolve(digest);
             return deferred.promise;
         }
@@ -220,22 +220,130 @@ factory('Digest', ['$q', function($q) {
     return factory;
 }]).
 factory('Hello', ['$resource', 'TokenHandler', function($resource, tokenHandler) {
-    var resource = $resource('/app_dev.php/api/hello');
+    var resource = $resource('./app_dev.php/api/hello');
+    resource = tokenHandler.wrapActions(resource, ['get']);
+    return resource;
+}]).
+factory('User', ['$resource', 'TokenHandler', function($resource, tokenHandler) {
+    var resource = $resource('./app_dev.php/api/users/:username',{username:'@username'}, {
+        query: {method:'GET', params:{username:'@username'}, isArray:true}
+    });
     resource = tokenHandler.wrapActions(resource, ['get']);
     return resource;
 }]).
 factory('Todos', ['$resource', 'TokenHandler', function($resource, tokenHandler){
-    var resource = $resource('/app_dev.php/api/todos', {}, { 
+    var resource = $resource('./app_dev.php/api/todos', {}, {
         query: {method:'GET', params:{}, isArray:true}
     });
     resource = tokenHandler.wrapActions(resource, ['get', 'query']);
     return resource;
 }]).
 factory('Todo', ['$resource', 'TokenHandler', function($resource, tokenHandler){
-    var resource = $resource('/app_dev.php/api/todo', {}, { 
+    var resource = $resource('./app_dev.php/api/todo', {}, {
         update: {method:'PUT'},
     });
     resource = tokenHandler.wrapActions(resource, ['get', 'update']);
     return resource;
 }]).
+factory('Projets', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/projets/:id', {id:'@id'}, {
+        query: {method:'GET', params:{}, isArray:true}
+    });
+    resource = tokenHandler.wrapActions(resource, ['GET', 'query']);
+    return resource;
+}]).
+factory('AjouterProjet', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/projets', {}, {
+        post: {method:'POST'}
+    });
+    resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('Signup', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/signup', {},{
+         post: { method: 'POST' }
+     });
+    resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('AddTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/tickets', {},{
+         post: { method: 'POST' }
+     });
+    resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('GetTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+    var resource = $resource('./app_dev.php/api/tickets/:iddev/:idproj', {},{
+         get: { method: 'GET' , params:{}, isArray:true}
+     });
+    resource = tokenHandler.wrapActions(resource, ['GET','query']);
+    return resource;
+}]).
+factory('ChangeTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/updates/:idticket/tickets', {idticket:'@id'}, {
+      post: {method:'POST'}
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('DeleteTicket', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/deletes/:idticket/tickets', {idticket:'@id'}, {
+      post: {method:'POST'}
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('Team', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/teams/:idproj', {idproj:'@id'}, {
+      get: { method: 'GET' , params:{}, isArray:false}
+  });
+  resource = tokenHandler.wrapActions(resource, ['GET','get']);
+    return resource;
+}]).
+factory('Users', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/all/user', {}, {
+      get: { method: 'GET' , params:{}, isArray:true}
+  });
+  resource = tokenHandler.wrapActions(resource, ['GET','get']);
+    return resource;
+}]).
+factory('AddUser', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/updates/teammates', {}, {
+      post: { method: 'POST' }
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('RemoveUser', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/deletes/teammates', {}, {
+      post: { method: 'POST' }
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post']);
+    return resource;
+}]).
+factory('Discussion', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/discussions', {}, {
+      post: { method: 'POST' },
+      get: { method: 'GET' }
+  });
+  resource = tokenHandler.wrapActions(resource, ['POST','post','GET','get']);
+    return resource;
+}]).
+factory('Discussions', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/discussions/:idproj', {idproj:"@idproj"}, {
+      get: { method: 'GET' , params:{}, isArray:true}
+  });
+  resource = tokenHandler.wrapActions(resource, ['GET','get']);
+    return resource;
+}]).
+factory('Messages', ['$resource', 'TokenHandler', function($resource, tokenHandler){
+  var resource = $resource('./app_dev.php/api/messages/:iddisc', {iddisc:"@iddisc"}, {
+      get: { method: 'GET' , params:{}, isArray:true},
+      post: { method: 'POST' }
+  });
+  resource = tokenHandler.wrapActions(resource, ['GET','get','POST', 'post']);
+    return resource;
+}]).
+
   value('version', '0.1');

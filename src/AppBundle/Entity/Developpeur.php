@@ -35,9 +35,9 @@ class Developpeur
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *@MaxDepth(2)
+     *@MaxDepth(3)
      */
-    private $idproj;
+    public $idproj;
 
     /**
      * @var \Doctrine\Common\Collections\Collection

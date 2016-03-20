@@ -20,6 +20,7 @@
       <parameter key="JMSDiExtraBundle">JMS\DiExtraBundle\JMSDiExtraBundle</parameter>
       <parameter key="JMSSecurityExtraBundle">JMS\SecurityExtraBundle\JMSSecurityExtraBundle</parameter>
       <parameter key="AppBundle">AppBundle\AppBundle</parameter>
+      <parameter key="EkoFeedBundle">Eko\FeedBundle\EkoFeedBundle</parameter>
       <parameter key="FOSRestBundle">FOS\RestBundle\FOSRestBundle</parameter>
       <parameter key="FOSUserBundle">FOS\UserBundle\FOSUserBundle</parameter>
       <parameter key="JMSSerializerBundle">JMS\SerializerBundle\JMSSerializerBundle</parameter>
@@ -566,9 +567,12 @@
     <parameter key="jms_di_extra.cache_dir">/var/www/html/CoolLaboratory/app/cache/dev/jms_diextra</parameter>
     <parameter key="jms_di_extra.disable_grep">false</parameter>
     <parameter key="jms_di_extra.doctrine_integration">true</parameter>
+    <parameter key="jms_di_extra.annotation_patterns" type="collection">
+      <parameter>JMS\DiExtraBundle\Annotation</parameter>
+    </parameter>
     <parameter key="jms_di_extra.cache_warmer.controller_file_blacklist" type="collection"/>
-    <parameter key="jms_di_extra.doctrine_integration.entity_manager.file">/var/www/html/CoolLaboratory/app/cache/dev/jms_diextra/doctrine/EntityManager_56cc2b44b6b38.php</parameter>
-    <parameter key="jms_di_extra.doctrine_integration.entity_manager.class">EntityManager56cc2b44b6b38_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager</parameter>
+    <parameter key="jms_di_extra.doctrine_integration.entity_manager.file">/var/www/html/CoolLaboratory/app/cache/dev/jms_diextra/doctrine/EntityManager_56eeca3fe6701.php</parameter>
+    <parameter key="jms_di_extra.doctrine_integration.entity_manager.class">EntityManager56eeca3fe6701_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager</parameter>
     <parameter key="security.secured_services" type="collection"/>
     <parameter key="security.access.method_interceptor.class">JMS\SecurityExtraBundle\Security\Authorization\Interception\MethodSecurityInterceptor</parameter>
     <parameter key="security.access.method_access_control" type="collection"/>
@@ -606,6 +610,30 @@
       <parameter>ROLE_PREVIOUS_ADMIN</parameter>
     </parameter>
     <parameter key="security.iddqd_aliases" type="collection"/>
+    <parameter key="eko_feed.feed.manager.class">Eko\FeedBundle\Feed\FeedManager</parameter>
+    <parameter key="eko_feed.feed.class">Eko\FeedBundle\Feed\Feed</parameter>
+    <parameter key="eko_feed.feed.reader.class">Eko\FeedBundle\Feed\Reader</parameter>
+    <parameter key="eko_feed.feed.dump.class">Eko\FeedBundle\Service\FeedDumpService</parameter>
+    <parameter key="eko_feed.formatter.rss.class">Eko\FeedBundle\Formatter\RssFormatter</parameter>
+    <parameter key="eko_feed.formatter.atom.class">Eko\FeedBundle\Formatter\AtomFormatter</parameter>
+    <parameter key="eko_feed.hydrator.default.class">Eko\FeedBundle\Hydrator\DefaultHydrator</parameter>
+    <parameter key="eko_feed.config" type="collection">
+      <parameter key="feeds" type="collection">
+        <parameter key="rss" type="collection">
+          <parameter key="title">Activité du coolLab</parameter>
+          <parameter key="description">Les dernières activitées</parameter>
+          <parameter key="link" type="collection">
+            <parameter key="uri">http://77.153.245.34/CoolLaboratory/web/</parameter>
+            <parameter key="route_params" type="collection"/>
+          </parameter>
+          <parameter key="encoding">utf-8</parameter>
+          <parameter key="author">RD / SN</parameter>
+        </parameter>
+      </parameter>
+      <parameter key="hydrator">eko_feed.hydrator.default</parameter>
+      <parameter key="translation_domain">null</parameter>
+    </parameter>
+    <parameter key="eko_feed.translation_domain">null</parameter>
     <parameter key="fos_rest.serializer.exclusion_strategy.version"></parameter>
     <parameter key="fos_rest.serializer.exclusion_strategy.groups"></parameter>
     <parameter key="fos_rest.view_handler.jsonp.callback_param"></parameter>
@@ -619,10 +647,10 @@
     <parameter key="fos_rest.routing.loader.processor.class">FOS\RestBundle\Routing\Loader\RestRouteProcessor</parameter>
     <parameter key="fos_rest.routing.loader.reader.controller.class">FOS\RestBundle\Routing\Loader\Reader\RestControllerReader</parameter>
     <parameter key="fos_rest.routing.loader.reader.action.class">FOS\RestBundle\Routing\Loader\Reader\RestActionReader</parameter>
-    <parameter key="fos_rest.format_negotiator.class">FOS\RestBundle\Negotiation\FormatNegotiator</parameter>
-    <parameter key="fos_rest.inflector.class">FOS\RestBundle\Inflector\DoctrineInflector</parameter>
+    <parameter key="fos_rest.format_negotiator.class">FOS\RestBundle\Util\FormatNegotiator</parameter>
+    <parameter key="fos_rest.inflector.class">FOS\RestBundle\Util\Inflector\DoctrineInflector</parameter>
     <parameter key="fos_rest.request_matcher.class">Symfony\Component\HttpFoundation\RequestMatcher</parameter>
-    <parameter key="fos_rest.violation_formatter.class">FOS\RestBundle\Validator\ViolationFormatter</parameter>
+    <parameter key="fos_rest.violation_formatter.class">FOS\RestBundle\Util\ViolationFormatter</parameter>
     <parameter key="fos_rest.request.param_fetcher.class">FOS\RestBundle\Request\ParamFetcher</parameter>
     <parameter key="fos_rest.request.param_fetcher.reader.class">FOS\RestBundle\Request\ParamReader</parameter>
     <parameter key="fos_rest.cache_dir">/var/www/html/CoolLaboratory/app/cache/dev/fos_rest</parameter>
@@ -1504,9 +1532,12 @@
             <argument type="service" id="service_container"/>
             <argument type="collection">
               <argument key="validator.expression">validator.expression</argument>
+              <argument key="Symfony\Component\Validator\Constraints\ExpressionValidator">validator.expression</argument>
               <argument key="Symfony\Component\Validator\Constraints\EmailValidator">validator.email</argument>
               <argument key="security.validator.user_password">security.validator.user_password</argument>
+              <argument key="Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator">security.validator.user_password</argument>
               <argument key="doctrine.orm.validator.unique">doctrine.orm.validator.unique</argument>
+              <argument key="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator">doctrine.orm.validator.unique</argument>
             </argument>
           </service>
         </argument>
@@ -1777,9 +1808,6 @@
             <argument type="service" id="fos_rest.routing.loader.controller"/>
           </call>
           <call method="addLoader">
-            <argument type="service" id="fos_rest.routing.loader.directory"/>
-          </call>
-          <call method="addLoader">
             <argument type="service" id="fos_rest.routing.loader.yaml_collection"/>
           </call>
           <call method="addLoader">
@@ -1994,7 +2022,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>56cc2b449df110.61274508</argument>
+            <argument>56eeca3f7c3977.71889779</argument>
           </service>
         </argument>
       </argument>
@@ -2336,7 +2364,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.token_storage"/>
-            <argument>56cc2b449df110.61274508</argument>
+            <argument>56eeca3f7c3977.71889779</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -2857,8 +2885,8 @@
       <argument type="collection"/>
       <argument type="collection"/>
     </service>
-    <service id="doctrine.orm.default_entity_manager" class="EntityManager56cc2b44b6b38_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager">
-      <file>/var/www/html/CoolLaboratory/app/cache/dev/jms_diextra/doctrine/EntityManager_56cc2b44b6b38.php</file>
+    <service id="doctrine.orm.default_entity_manager" class="EntityManager56eeca3fe6701_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager">
+      <file>/var/www/html/CoolLaboratory/app/cache/dev/jms_diextra/doctrine/EntityManager_56eeca3fe6701.php</file>
       <argument type="service">
         <service class="Doctrine\ORM\EntityManager" public="false">
           <argument type="service" id="doctrine.dbal.default_connection"/>
@@ -3137,6 +3165,59 @@
       <argument type="service" id="security.authentication.manager"/>
       <argument type="service" id="monolog.logger.wsse"/>
     </service>
+    <service id="eko_feed.feed.manager" class="Eko\FeedBundle\Feed\FeedManager">
+      <argument type="service" id="router"/>
+      <argument type="collection">
+        <argument key="feeds" type="collection">
+          <argument key="rss" type="collection">
+            <argument key="title">Activité du coolLab</argument>
+            <argument key="description">Les dernières activitées</argument>
+            <argument key="link" type="collection">
+              <argument key="uri">http://77.153.245.34/CoolLaboratory/web/</argument>
+              <argument key="route_params" type="collection"/>
+            </argument>
+            <argument key="encoding">utf-8</argument>
+            <argument key="author">RD / SN</argument>
+          </argument>
+        </argument>
+        <argument key="hydrator">eko_feed.hydrator.default</argument>
+        <argument key="translation_domain">null</argument>
+      </argument>
+      <argument type="collection">
+        <argument key="rss" type="service" id="eko_feed.formatter.rss"/>
+        <argument key="atom" type="service" id="eko_feed.formatter.atom"/>
+      </argument>
+    </service>
+    <service id="eko_feed.feed.dump" class="Eko\FeedBundle\Service\FeedDumpService">
+      <argument type="service" id="eko_feed.feed.manager"/>
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="filesystem"/>
+      <call method="setRootDir">
+        <argument>/var/www/html/CoolLaboratory/app</argument>
+      </call>
+    </service>
+    <service id="eko_feed.feed.reader" class="Eko\FeedBundle\Feed\Reader">
+      <call method="setHydrator">
+        <argument type="service" id="eko_feed.hydrator.default"/>
+      </call>
+    </service>
+    <service id="eko_feed.feed" class="Eko\FeedBundle\Feed\Feed">
+      <argument></argument>
+      <call method="setRouter">
+        <argument type="service" id="router"/>
+      </call>
+    </service>
+    <service id="eko_feed.formatter.rss" class="Eko\FeedBundle\Formatter\RssFormatter">
+      <tag name="eko_feed.formatter" format="rss"/>
+      <argument type="service" id="translator"/>
+      <argument>null</argument>
+    </service>
+    <service id="eko_feed.formatter.atom" class="Eko\FeedBundle\Formatter\AtomFormatter">
+      <tag name="eko_feed.formatter" format="atom"/>
+      <argument type="service" id="translator"/>
+      <argument>null</argument>
+    </service>
+    <service id="eko_feed.hydrator.default" class="Eko\FeedBundle\Hydrator\DefaultHydrator"/>
     <service id="fos_rest.view.exception_wrapper_handler" class="FOS\RestBundle\View\ExceptionWrapperHandler"/>
     <service id="fos_rest.serializer.exception_wrapper_serialize_handler" class="FOS\RestBundle\Serializer\ExceptionWrapperSerializeHandler">
       <tag name="jms_serializer.subscribing_handler"/>
@@ -3152,10 +3233,6 @@
       <argument type="service" id="controller_name_converter"/>
       <argument type="service" id="fos_rest.routing.loader.reader.controller"/>
       <argument>json</argument>
-    </service>
-    <service id="fos_rest.routing.loader.directory" class="FOS\RestBundle\Routing\Loader\DirectoryRouteLoader">
-      <tag name="routing.loader"/>
-      <argument type="service" id="fos_rest.routing.loader.processor"/>
     </service>
     <service id="fos_rest.routing.loader.processor" class="FOS\RestBundle\Routing\Loader\RestRouteProcessor"/>
     <service id="fos_rest.routing.loader.yaml_collection" class="FOS\RestBundle\Routing\Loader\RestYamlCollectionLoader">
@@ -3197,10 +3274,10 @@
         <argument key="html">true</argument>
       </argument>
     </service>
-    <service id="fos_rest.format_negotiator" class="FOS\RestBundle\Negotiation\FormatNegotiator"/>
-    <service id="fos_rest.exception_format_negotiator" class="FOS\RestBundle\Negotiation\FormatNegotiator"/>
-    <service id="fos_rest.inflector.doctrine" class="FOS\RestBundle\Inflector\DoctrineInflector"/>
-    <service id="fos_rest.violation_formatter" class="FOS\RestBundle\Validator\ViolationFormatter"/>
+    <service id="fos_rest.format_negotiator" class="FOS\RestBundle\Util\FormatNegotiator"/>
+    <service id="fos_rest.exception_format_negotiator" class="FOS\RestBundle\Util\FormatNegotiator"/>
+    <service id="fos_rest.inflector.doctrine" class="FOS\RestBundle\Util\Inflector\DoctrineInflector"/>
+    <service id="fos_rest.violation_formatter" class="FOS\RestBundle\Util\ViolationFormatter"/>
     <service id="fos_rest.request.param_fetcher" class="FOS\RestBundle\Request\ParamFetcher">
       <argument type="service" id="fos_rest.request.param_fetcher.reader"/>
       <argument type="service" id="request_stack" on-invalid="null"/>
@@ -4262,6 +4339,7 @@
                       <argument key="JMS\DiExtraBundle">/var/www/html/CoolLaboratory/vendor/jms/di-extra-bundle/Resources/config/serializer</argument>
                       <argument key="JMS\SecurityExtraBundle">/var/www/html/CoolLaboratory/vendor/jms/security-extra-bundle/Resources/config/serializer</argument>
                       <argument key="AppBundle">/var/www/html/CoolLaboratory/src/AppBundle/Resources/config/serializer</argument>
+                      <argument key="Eko\FeedBundle">/var/www/html/CoolLaboratory/vendor/eko/feedbundle/Resources/config/serializer</argument>
                       <argument key="FOS\RestBundle">/var/www/html/CoolLaboratory/vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/Resources/config/serializer</argument>
                       <argument key="FOS\UserBundle">/var/www/html/CoolLaboratory/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
                       <argument key="JMS\SerializerBundle">/var/www/html/CoolLaboratory/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
@@ -4290,6 +4368,7 @@
                       <argument key="JMS\DiExtraBundle">/var/www/html/CoolLaboratory/vendor/jms/di-extra-bundle/Resources/config/serializer</argument>
                       <argument key="JMS\SecurityExtraBundle">/var/www/html/CoolLaboratory/vendor/jms/security-extra-bundle/Resources/config/serializer</argument>
                       <argument key="AppBundle">/var/www/html/CoolLaboratory/src/AppBundle/Resources/config/serializer</argument>
+                      <argument key="Eko\FeedBundle">/var/www/html/CoolLaboratory/vendor/eko/feedbundle/Resources/config/serializer</argument>
                       <argument key="FOS\RestBundle">/var/www/html/CoolLaboratory/vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/Resources/config/serializer</argument>
                       <argument key="FOS\UserBundle">/var/www/html/CoolLaboratory/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
                       <argument key="JMS\SerializerBundle">/var/www/html/CoolLaboratory/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
@@ -4318,6 +4397,7 @@
                       <argument key="JMS\DiExtraBundle">/var/www/html/CoolLaboratory/vendor/jms/di-extra-bundle/Resources/config/serializer</argument>
                       <argument key="JMS\SecurityExtraBundle">/var/www/html/CoolLaboratory/vendor/jms/security-extra-bundle/Resources/config/serializer</argument>
                       <argument key="AppBundle">/var/www/html/CoolLaboratory/src/AppBundle/Resources/config/serializer</argument>
+                      <argument key="Eko\FeedBundle">/var/www/html/CoolLaboratory/vendor/eko/feedbundle/Resources/config/serializer</argument>
                       <argument key="FOS\RestBundle">/var/www/html/CoolLaboratory/vendor/friendsofsymfony/rest-bundle/FOS/RestBundle/Resources/config/serializer</argument>
                       <argument key="FOS\UserBundle">/var/www/html/CoolLaboratory/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
                       <argument key="JMS\SerializerBundle">/var/www/html/CoolLaboratory/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
@@ -4434,9 +4514,6 @@
         </service>
       </argument>
     </service>
-    <service id="fos_rest.serializer" class="FOS\RestBundle\Serializer\JMSSerializerAdapter" lazy="true">
-      <argument type="service" id="jms_serializer"/>
-    </service>
     <service id="session.storage" alias="session.storage.native"/>
     <service id="event_dispatcher" alias="debug.event_dispatcher"/>
     <service id="swiftmailer.spool" alias="swiftmailer.mailer.default.spool"/>
@@ -4459,5 +4536,6 @@
     <service id="serializer" alias="jms_serializer"/>
     <service id="sensio.distribution.webconfigurator" alias="sensio_distribution.webconfigurator"/>
     <service id="console.command.sensiolabs_security_command_securitycheckercommand" alias="sensio_distribution.security_checker.command"/>
+    <service id="fos_rest.serializer" alias="jms_serializer"/>
   </services>
 </container>

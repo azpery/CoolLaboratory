@@ -48,9 +48,9 @@ class WsseProvider extends ContainerAware implements AuthenticationProviderInter
         $diff = $now->diff( $then, true );
 
         // Check created time is not in the future
-        if (strtotime($created) > time()) {
-          throw new AuthenticationException("Back to the future...");
-        }
+        // if (strtotime($created) > time()) {
+        //   throw new AuthenticationException("Back to the future...");
+        // }
 
         // Validate timestamp is recent within 5 minutes
         $seconds = time() - strtotime($created);

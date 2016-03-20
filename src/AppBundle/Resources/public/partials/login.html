@@ -1,12 +1,33 @@
-<p>This is the partial for login.</p>
 
-<p ng-show="salt"><strong>{{ username }}</strong> salt is <em>{{ salt }}</em></p>
-<p ng-show="secret"><strong>{{ username }}</strong> generated secret is <em>{{ secret }}</em></p>
-<p ng-show="secret">You should now have access to API because your're logged in</p>
+<section class="panel col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4" >
+                              <header class="panel-heading">
+                                  Se connecter
+                              </header>
+                              <div class="panel-body">
+                                  <form class="form-horizontal ng-pristine ng-valid" ng-submit="getSalt()" role="form" >
+                                    <p ng-show="secret"><strong>{{ username }}</strong>  <em>{{ secret }}</em></p>
+                                    <p ng-show="secret" translate="pSuccessConnect">Vous avez maintenant acces à l'api et au site</p>
+                                    <p ng-show="error"><strong>{{ error }}</strong></p>
+                                      <div class="form-group">
+                                          <label for="inputEmail1" class="col-lg-2 col-sm-2 control-label" translate="login">Nom d'utilisateur</label>
+                                          <div class="col-lg-10">
+                                              <input type="text" class="form-control" id="inputEmail1" ng-model="username" placeholder="nom d'utilisateur">
+                                              <p class="help-block" translate="pAideConnexion">Entrez votre nom utilisateur pour vous connecter.</p>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="inputPassword1" class="col-lg-2 col-sm-2 control-label" translate="password">mot de passe</label>
+                                          <div class="col-lg-10">
+                                              <input type="password" class="form-control" ng-model="password" id="inputPassword1" placeholder="Password">
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="col-lg-offset-2 col-lg-10">
+                                              <button  class="btn btn-default"  type="submit" value="login" translate="btnConnect">Se connecter</button>
+                                              <a  class="btn btn-danger" href="#/signup" translate="btnSignUp">S'enregistrer</a>
+                                          </div>
+                                      </div>
+                                  </form>
 
-<p>Please enter a symfony valid user : </p>
-<form ng-submit="getSalt()">
-<input type="text" ng-model="username"  size="30" placeholder="admin"><br>
-<input type="password" ng-model="password"  size="30" placeholder="admin"><br>
-<input class="btn-primary" type="submit" value="login">
-</form>
+                              </div>
+                          </section>

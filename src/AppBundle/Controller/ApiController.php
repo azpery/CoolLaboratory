@@ -67,14 +67,62 @@ class ApiController extends Controller
     }
 
     public function getProjetsAction($id){
+        $em = $this
+          ->getDoctrine()
+          ->getManager();
+        $dev = $em->getRepository('AppBundle:Developpeur')->findById($id);
+        if(count($em->getRepository('AppBundle:User')->findOneById($id)->getRoles()) >=2 ) {
+          $proj = $em
+            ->getRepository('AppBundle:Projet')
+            ->findAll()
+          ;
+          foreach ($proj as $e) {
+            $dev[0]->addIdproj($e);
+          }
+
+        }
+
+        $serializer = $this->container->get('serializer');
+        $reports = $serializer->serialize($dev, 'json', SerializationContext::create()->enableMaxDepthChecks());
+        return new Response($reports); // should be $reports as $doctrineobject is not serialized
+    //  return new JsonResponse($listAdverts);
+    }
+    public function getRssAction($idproj){
               $repository = $this
           ->getDoctrine()
           ->getManager()
-          ->getRepository('AppBundle:Developpeur')
+          ->getRepository('AppBundle:Rss')
         ;
-        $listAdverts = $repository->findById($id);
+        $projet = $this
+        ->getDoctrine()
+        ->getManager()
+        ->getRepository('AppBundle:Projet')
+        ->findOneById($idproj)
+        ;
+        $listAdverts = $repository->findByIdproj($projet);
+        $array=array();
+        $place = false;
+        $cpt=0;
+
+        foreach ($listAdverts as $rss) {
+          $cpt=0;
+          $place=false;
+          foreach ($array as $key ) {
+            $cpt++;
+            if($key["date"] == $rss->getPubdate()->format('Y-m-d') ){
+              $place=true;
+              break;
+            }
+          }
+          if(!$place){
+              $array[] = array("date"=>$rss->getPubdate()->format('Y-m-d'),"flux"=>array($rss));
+          }else {
+            $array[$cpt-1]["flux"][]=$rss;
+          }
+
+        }
         $serializer = $this->container->get('serializer');
-        $reports = $serializer->serialize($listAdverts, 'json', SerializationContext::create()->enableMaxDepthChecks());
+        $reports = $serializer->serialize($array, 'json', SerializationContext::create()->enableMaxDepthChecks());
         return new Response($reports); // should be $reports as $doctrineobject is not serialized
     //  return new JsonResponse($listAdverts);
     }
@@ -260,21 +308,21 @@ class ApiController extends Controller
      * @Route("/tickets/{iddev}/{idproj}", requirements={"iddev" = "\w+","idproj" = "\w+"})
      */
     public function getTicketsAction($iddev,$idproj){
-              $repository = $this
-          ->getDoctrine()
-          ->getManager()
-          ->getRepository('AppBundle:Developpeur')
+        $em = $this
+        ->getDoctrine()
+        ->getManager();
+        $repository =
+        $em
+        ->getRepository('AppBundle:Developpeur')
         ;
         $dev = $repository->findOneById($iddev);
-        $repository = $this
-        ->getDoctrine()
-        ->getManager()
+        $repository =
+        $em
         ->getRepository('AppBundle:Projet')
         ;
         $projet = $repository->findOneById($idproj);
-        $repository = $this
-        ->getDoctrine()
-        ->getManager()
+        $repository =
+        $em
         ->getRepository('AppBundle:Ticket')
         ;
         $projet = $repository->createQueryBuilder('t')
@@ -285,6 +333,14 @@ class ApiController extends Controller
             ->setParameter('dev_id', $iddev)
             ->setParameter('proj_id', $idproj)
             ->getQuery()->getResult();
+            if(count($em->getRepository('AppBundle:User')->findOneById($iddev)->getRoles()) >=2 ) {
+              $projet =
+              $em
+              ->getRepository('AppBundle:Ticket')
+              ->findByIdproj($idproj)
+              ;
+
+            }
         // $projet = $repository->findBy(array('iddev' => array($dev), 'idproj' =>  array($projet)));
         $serializer = $this->container->get('serializer');
         $reports = $serializer->serialize($projet, 'json', SerializationContext::create()->enableMaxDepthChecks());

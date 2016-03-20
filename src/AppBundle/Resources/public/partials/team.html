@@ -1,0 +1,86 @@
+<div class="page_card page list_mode ng-scope" id="project_tasks" page-title="Tasks - OremiaMobile" main-section="projects" sub-section="tasks" page-object="project">
+  <div class="page_inner">
+    <div id="back_button" class="page_block" url="projects" title="Projects">
+      <div class="page_block_inner">
+        <a href="#/index" class="small button" translate="btnRetourProjets">↩ Projets</a>
+      </div>
+    </div>
+    <div class="project_header" project="project" current-tab="tasks">
+      <div class="page_block page_header">
+        <div class="page_block_inner page_header_inner">
+          <ul class="page_header_actions button_group" ng-if="ischef">
+            <li>
+              <span class="small people_dropdown can_manage dropdown_button dropdown_button position_bottom">
+                <a href="#/project/{{idproj}}/team"> </a><button id="_button" type="button"><a href="#/project/{{idproj}}/team"><span class="name"><span translate="btnCoollab">Cool-laborateurs</span> ({{projet.iddev.length}})</span></a>
+              </button>
+              </span>
+            </li>
+            <li>
+              <span class="small project_details dropdown_button position_bottom" button-title="Project Info">
+                <a href="#/projets/ajouter"> </a><button id="_button" type="button"><a href="#/projets/ajouter"><span class="name" translate="btnInfo">Info du projet</span></a>
+              </button>
+
+              </span>
+            </li>
+
+          </ul>
+
+          <h1>{{projet.nom}}</h1>
+        </div>
+      </div>
+
+      <div class="page_tabs page_block">
+        <div class="page_tabs_inner page_block_inner">
+          <div id="project_top_bar">
+            <ul class="page_tabs_tabs">
+              <li class="selected">
+                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/{{idproj}}" href="#/projects/1" translate="labelTabTicket">Tickets</a>
+              </li>
+              <li>
+                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/{{idproj}}/discussion" href="#/projects/1/discussion"translate="labelTabDiscussion">Discussions</a>
+              </li>
+              <li class="">
+                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/{{idproj}}/activite" href="#/projects/1/activite" translate="labelTabActivite">Activité</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page_main">
+      <div class="col-md-12">
+        <div class="panel">
+          <header class="panel-heading">
+            Cool Laborateurs
+          </header>
+
+          <ul class="list-group teammates" >
+            <li class="list-group-item" ng-repeat="coolab in coolabs">
+              <a href=""><img src="./bundles/app/img/26115.jpg" width="50" height="50"></a>
+              <a href="">{{coolab.nom}} {{coolab.prenom}}</a>
+<span class="pull-right">
+              <button class="btn btn-danger btn-xs" ng-click="remove($index)"><span class="glyphicon glyphicon-remove" ></span></button>
+</span>
+            </li>
+
+            <li class="list-group-item">
+              <input ng-model="query.nom" class="form-control">
+              <ul class="phones" ng-if="query.nom">
+                <li ng-repeat="user in users | filter:query:strict" ng-click="addCoolab($index)">
+                  {{user.nom}} {{user.prenom}}
+                </li>
+              </ul>
+
+            </li>
+          </ul>
+          <div class="panel-footer bg-white">
+            <!-- <span class="pull-right badge badge-info">32</span> -->
+            <button class="btn btn-primary btn-addon btn-sm">
+              <i class="fa fa-plus"></i> Ajouter un Cool laborateur
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

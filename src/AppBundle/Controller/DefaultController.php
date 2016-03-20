@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Developpeur;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use JMS\Serializer\SerializationContext;
 
 /**
  * @Route("/")
@@ -26,7 +27,23 @@ class DefaultController extends Controller
     {
         return array();
     }
-
+    /**
+     * @Route("/user")
+     */
+    public function getUserAction(){
+      $repository = $this
+      ->getDoctrine()
+      ->getManager()
+      ->getRepository('AppBundle:User')
+      ;
+      $user = $repository->findOneByUsernameCanonical("lol");
+      if(!is_object($user)){
+        throw $this->createNotFoundException();
+      }
+      $serializer = $this->container->get('serializer');
+      $reports = $serializer->serialize($user->getRoles(), 'json', SerializationContext::create()->enableMaxDepthChecks());
+      return new Response($reports);
+    }
     /**
      * @Route("/{username}/salt", requirements={"username" = "\w+"})
      */
@@ -41,6 +58,22 @@ class DefaultController extends Controller
         }
 
         return new JsonResponse(array('salt' => $user->getSalt()));
+    }
+    /**
+     * Generate the article feed
+     *
+     * @Route("/rss", defaults={"_format"="xml"})
+     * @return Response XML Feed
+     */
+    public function rssAction()
+    {
+        $articles = $this->getDoctrine()->getRepository('AppBundle:Rss')->findAll();
+
+        $feed = $this->get('eko_feed.feed.manager')->get('rss');
+        $feed->addFromArray($articles);
+        // $response->headers->set('Content-Type', 'xml');
+
+        return new Response($feed->render('rss')); // or 'atom'
     }
     /**
      * @Route("/signup")

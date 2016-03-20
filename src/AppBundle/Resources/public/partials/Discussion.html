@@ -1,0 +1,86 @@
+<div class="page_card page list_mode ng-scope" id="project_discussions" page-title="Tasks - OremiaMobile" main-section="projects" sub-section="tasks" page-object="project">
+  <div class="page_inner">
+    <div id="back_button" class="page_block" url="projects" title="Projects">
+      <div class="page_block_inner">
+        <a href="#/index" class="small button" translate="btnRetourProjets">↩ Projets</a>
+      </div>
+    </div>
+    <div class="project_header" project="project" current-tab="tasks">
+      <div class="page_block page_header">
+        <div class="page_block_inner page_header_inner">
+          <ul class="page_header_actions button_group" ng-if="ischef">
+            <li>
+              <span class="small people_dropdown can_manage dropdown_button dropdown_button position_bottom">
+                <a href="#/project/{{idproj}}/team"> </a><button id="_button" type="button"><a href="#/project/{{idproj}}/team"><span class="name"><span translate="btnCoollab">Cool-laborateurs</span> ({{projet.iddev.length}})</span></a>
+              </button>
+              </span>
+            </li>
+            <li>
+              <span class="small project_details dropdown_button position_bottom" button-title="Project Info">
+                <a href="#/projets/ajouter"> </a><button id="_button" type="button"><a href="#/projets/ajouter"><span class="name" translate="btnInfo">Info du projet</span></a>
+              </button>
+
+              </span>
+            </li>
+
+          </ul>
+
+          <h1>{{projet.nom}}</h1>
+        </div>
+      </div>
+
+      <div class="page_tabs page_block">
+        <div class="page_tabs_inner page_block_inner">
+          <div id="project_top_bar">
+            <ul class="page_tabs_tabs">
+              <li >
+                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/{{id}}"  translate="labelTabTicket">Tickets</a>
+              </li>
+              <li class="selected">
+                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/{{id}}/discussion" href="#/projects/1/discussion"translate="labelTabDiscussion">Discussions</a>
+              </li>
+              <li class="">
+                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/{{id}}/activite" href="#/projects/1/activite" translate="labelTabActivite">Activité</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page_action_bar page_block">
+      <div class="page_action_bar_inner page_block_inner">
+        <div class="page_action_bar_left">
+          <a ng-href="#/projects/{{id}}/discussions/add" class="button small default" href="projects/1/discussions/add">+ Ouvrir une discution</a>
+        </div>
+      </div>
+    </div>
+    <div class="page_main">
+      <div class="page_main_inner" >
+        <div class="discussions">
+          <div class="discussions_group">
+            <table class="items_table">
+              <thead>
+                <tr>
+                  <th colspan="4">Discussions récentes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr touch-href="projects/{{discussion.idproj.id}}/discussions/{{discussion.id}}" ng-repeat="discussion in discussions">
+                  <td class="col_comment_count"><span class="comment_count icon icon_read_bubble">0</span></td>
+                  <td class="col_main">
+                    <div class="discussion_link"><a href="#/project/{{discussion.idproj.id}}/discussion/{{discussion.id}}">{{discussion.description}}</a>
+                    </div>
+                  </td>
+                  <td class="col_ago">Il y a 13 jours</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="load_more_pagination ng-hide">
+            <a href="">Load older</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -24,7 +24,14 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-
+eko_feed:
+    feeds:
+        rss:
+            title:       'Activité du coolLab'
+            description: 'Les dernières activitées'
+            link:        'http://77.153.245.34/CoolLaboratory/web/'
+            encoding:    'utf-8'
+            author:      'RD / SN' # Only required for Atom feeds
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%

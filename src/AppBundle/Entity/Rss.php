@@ -1,11 +1,13 @@
 <?php
 
 namespace AppBundle\Entity;
+use JMS\Serializer\Annotation\MaxDepth;
+use Eko\FeedBundle\Item\Writer\ItemInterface;
 
 /**
  * Rss
  */
-class Rss
+class Rss implements ItemInterface
 {
     /**
      * @var string
@@ -34,6 +36,7 @@ class Rss
 
     /**
      * @var \AppBundle\Entity\Projet
+     *@MaxDepth(2)
      */
     private $idproj;
 
@@ -61,6 +64,9 @@ class Rss
     {
         return $this->title;
     }
+    public function getFeedItemTitle() {
+      return $this->title;
+     }
 
     /**
      * Set description
@@ -75,6 +81,10 @@ class Rss
 
         return $this;
     }
+    public function getFeedItemDescription() {
+      return $this->description;
+
+     }
 
     /**
      * Get description
@@ -109,8 +119,10 @@ class Rss
     {
         return $this->pubdate;
     }
-
-    /**
+    public function getFeedItemPubDate() {
+      return $this->pubdate;
+     }
+      /**
      * Set link
      *
      * @param string $link
@@ -133,7 +145,10 @@ class Rss
     {
         return $this->link;
     }
+    public function getFeedItemLink() {
+      return "http://77.153.245.34/CoolLaboratory/web/app_dev.php/#/projects/".$this->link;
 
+     }
     /**
      * Get id
      *

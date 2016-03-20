@@ -1,0 +1,159 @@
+
+<div class="page_card page list_mode ng-scope" id="project_tasks" page-title="Tasks - OremiaMobile" main-section="projects" sub-section="tasks" page-object="project">
+  <div class="page_inner">
+    <div id="back_button" class="page_block" url="projects" title="Projects">
+      <div class="page_block_inner">
+        <a href="#/index" class="small button" translate="btnRetourProjets">↩ Projets</a>
+      </div>
+    </div>
+    <div class="project_header" project="project" current-tab="tasks">
+      <div class="page_block page_header">
+        <div class="page_block_inner page_header_inner">
+          <ul class="page_header_actions button_group" ng-if="ischef">
+            <li>
+              <span class="small people_dropdown can_manage dropdown_button dropdown_button position_bottom">
+                <a href="#/project/{{idproj}}/team"> </a><button id="_button" type="button"><a href="#/project/{{idproj}}/team"><span class="name"><span translate="btnCoollab">Cool-laborateurs</span> ({{projet.iddev.length}})</span></a>
+              </button>
+              </span>
+            </li>
+            <li>
+              <span class="small project_details dropdown_button position_bottom" button-title="Project Info">
+                <a href="#/projets/ajouter"> </a><button id="_button" type="button"><a href="#/projets/ajouter"><span class="name" translate="btnInfo">Info du projet</span></a>
+              </button>
+
+              </span>
+            </li>
+
+          </ul>
+
+          <h1>{{projet.nom}}</h1>
+        </div>
+      </div>
+
+      <div class="page_tabs page_block">
+        <div class="page_tabs_inner page_block_inner">
+          <div id="project_top_bar">
+            <ul class="page_tabs_tabs">
+              <li class="selected">
+                <a class="page_sidebar_menu_item page_tab_icon_tasks" ng-href="#/projects/{{idproj}}" href="#/projects/1" translate="labelTabTicket">Tickets</a>
+              </li>
+              <li>
+                <a class="page_sidebar_menu_item page_tab_icon_discussions" ng-href="#/projects/{{idproj}}/discussion" href="#/projects/1/discussion"translate="labelTabDiscussion">Discussions</a>
+              </li>
+              <li class="">
+                <a class="page_sidebar_menu_item page_tab_icon_activity" ng-href="#/projects/{{idproj}}/activite" href="#/projects/1/activite" translate="labelTabActivite">Activité</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page_main">
+      <div class="page_main_inner">
+        <div class="project_tasks_columns can_batch_manage">
+          <!-- LEFT COLUMN -->
+          <div class="project_tasks_left_column">
+
+            <div class="unsorted_tasks">
+              <div class="add_new_unsorted opened" id="add_new_unsorted">
+                <form ng-if="ischef" class="slim_form slim_form_inline ng-pristine ang_form ng-invalid ng-invalid-required ng-valid-maxlength" name="add_unsorted" ng-submit="addTicket()" novalidate="true">
+                  <div class="task_form ng-valid with_subscribers" project="project">
+                    <div class="slim_form_column_wrapper">
+                      <div class="slim_form_left_column with_task_list">
+                        <div class="form_block">
+                          <div class="form_section name_description">
+                            <div class="form_field name form_field_validation" form-field="name">
+                              <input type="text" name="name" ng-model="ticket.nom" focus-on="true" translate translate-attr-placeholder="placeHolderNvTkNom" required="" ng-maxlength="150" maxlength="150" autocomplete="off" class="ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-touched">
+                              <div class="form_field_validation_message">Required</div>
+                            </div>
+                            <div class="form_field editor">
+                              <div class="visual_editor_tinymce_wrapper ng-valid ng-pristine" placeholder="Décrivez le">
+                                <div class="visual_editor_tinymce_toggler">A</div>
+                                <div class="form-group">
+                                  <label for="comment" translate="labelDescription">Description:</label>
+                                  <textarea class="form-control" rows="5" ng-model="ticket.description" id="comment"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="form_buttons small">
+                <button type="submit" class="default small submit_button" translate="btnAjoutTk">Ajouter le Ticket</button>
+              </div>
+              </form>
+            </div>
+          </div>
+          <div class="task_lists">
+            <div class="task_list_tasks ui-droppable" id="task_list_1">
+              <div class="task_list">
+                <span class="task_list_options small chromeless object_actions_dropdown">
+  <span class="dropdown_button position_bottom" icon="icon_options_dropdown_black">
+  <button id="_button" type="button"><span class="icon icon_options_dropdown_black"></span>
+                <span class="name"></span>
+                </button>
+                <!-- ngIf: !dropdown -->
+                <!-- ngIf: !dropdown -->
+                <div class="menu menu_right ng-scope" ng-if="!dropdown">
+                  <span class="button_arrow"></span>
+                  <div class="menu_inner">
+                  </div>
+                </div>
+                <!-- end ngIf: !dropdown -->
+                <!-- end ngIf: !dropdown -->
+                </span>
+                </span>
+                <h2>
+                <span translate="labelTkEnCours">Tickets en cours</span>
+              </h2>
+              </div>
+              <div>
+                <section class="panel tasks-widget">
+
+                  <div class="panel-body">
+
+                    <div class="task-content">
+
+                      <ul class="task-list"  ng-show="tickets.length > 0">
+                        <li class="list-group-item clearfix task"  ng-repeat="ticket in tickets" >
+                            <p class="lead">{{ticket.libelle}} : {{ticket.description}}</p>
+                            <div>
+                              <span class="pull-right">
+                                <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+                                <button class="btn btn-primary btn-xs" ng-show="!ticket.etat" ng-click="setNotOk($index)"><span class="glyphicon glyphicon-ok"></span></button>
+                                <button class="btn btn-primary btn-xs" ng-show="ticket.etat" ng-click="setOk($index)"><span class="glyphicon glyphicon-repeat"></span></button>
+                                <button class="btn btn-danger btn-xs" ng-click="remove($index)"><span class="glyphicon glyphicon-remove" ></span></button>
+                              </span>
+                            </div>
+                          </li>
+                      </ul>
+                    </div>
+
+
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="project_tasks_right_column">
+
+          <div class="project_tasks_right_column_section sidebar_progress">
+            <h3 translate="headerTickets">Progression du projet</h3>
+            <p>{{doneTickets}} <span translate="sur">sur</span> {{tickets.length}} <span translate="labelTabTicket">Tickets.</span>
+              <br> {{tickets.length}} <span translate="labelTkEnCours">Ticket en cours.</span></p>
+            <div class="progressbar">
+              <div class="progressbar_value" style="width: {{doneTickets/tickets.length*100}}%">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
